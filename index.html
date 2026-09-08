@@ -106,7 +106,6 @@
 
     const AVATARS = ['🐱', '🐶', '🦊', '🐰', '🐻', '🐼', '🐯', '🦁', '🦄', '🐲', '🐦‍🔥', '🦖'];
 
-    // 🌟 更新：背景元素改為魔法與幻獸主題
     const MAGIC_ELEMENTS = ['✨', '🌟', '💎', '🎵', '🎶', '⚡', '🔮', '🎈', '☁️', '⭐'];
     const BACKGROUND_DECORATIONS = Array.from({ length: 25 }).map((_, i) => ({
       id: i, emoji: MAGIC_ELEMENTS[Math.floor(Math.random() * MAGIC_ELEMENTS.length)], top: `${Math.random() * 90 + 5}%`, left: `${Math.random() * 90 + 5}%`, fontSize: `${Math.random() * 2 + 1.5}rem`, animationDuration: `${Math.random() * 10 + 15}s`, animationDelay: `${Math.random() * 5}s`, opacity: Math.random() * 0.12 + 0.05 
@@ -119,6 +118,26 @@
         ))}
       </div>
     );
+
+    // 🌟 TTS 發音過濾器
+    const getTtsText = (text) => {
+      let t = text;
+      t = t.replace(/都會/g, '兜會');
+      t = t.replace(/都有/g, '兜有');
+      t = t.replace(/都帶/g, '兜帶');
+      t = t.replace(/都去/g, '兜去');
+      t = t.replace(/都餵/g, '兜餵');
+      if (t === '都') t = '兜';
+      t = t.replace(/還有/g, '孩有');
+      t = t.replace(/還會/g, '孩會');
+      t = t.replace(/還想/g, '孩想');
+      if (t === '還') t = '孩';
+      t = t.replace(/和/g, '汗');
+      if (t === '和') t = '汗';
+      t = t.replace(/長高/g, '掌高');
+      t = t.replace(/睡覺/g, '睡叫');
+      return t;
+    };
 
     // --- 完整課程資料 (含拼音) ---
     const LESSONS = [
@@ -161,8 +180,7 @@
         micNotice1: "請務必允許「麥克風權限」",
         micNotice2: "蘋果 (iPhone/iPad) 請務必使用 Safari",
         micNotice3: "安卓 (Android) 請務必使用 Chrome",
-        leaderboard: "英雄榜", rank: "名次", name: "姓名", score: "獲得星星", date: "日期", comment: "評語", noData: "目前還沒有紀錄，趕快來挑戰吧！", 
-        commentPerfect: "一發入魂💯", commentExcellent: "完美優異🌟", commentHardworking: "百折不撓🔥", commentGreat: "表現很棒👍", commentGood: "繼續保持✨", commentKeepGoing: "再接再厲💪"
+        leaderboard: "英雄榜", rank: "名次", name: "姓名", score: "最高分", date: "日期", practiceStat: "練習量", lastUpdate: "最後更新", noData: "目前還沒有紀錄，趕快來挑戰吧！"
       }, 
       en: { 
         appTitle: "I can Read", appSubtitle: "Let's Learn Mandarin", tipsTitle: "Quick Tips", 
@@ -188,8 +206,7 @@
         micNotice1: "Please 'Allow' microphone access",
         micNotice2: "iOS (iPhone/iPad): Please use Safari",
         micNotice3: "Android: Please use Chrome",
-        leaderboard: "Leaderboard", rank: "Rank", name: "Name", score: "Stars", date: "Date", comment: "Comment", noData: "No records yet, be the first!", 
-        commentPerfect: "First Try💯", commentExcellent: "Excellent🌟", commentHardworking: "Persistent🔥", commentGreat: "Great👍", commentGood: "Good Job✨", commentKeepGoing: "Keep Going💪"
+        leaderboard: "Leaderboard", rank: "Rank", name: "Name", score: "Best Score", date: "Date", practiceStat: "Practice", lastUpdate: "Last Update", noData: "No records yet, be the first!"
       } 
     };
 
@@ -252,6 +269,7 @@
       const [lang, setLang] = useState('zh');
       const t = TRANSLATIONS[lang];
       const [selectedLesson, setSelectedLesson] = useState(LESSONS[0]);
+      const [leaderboardLesson, setLeaderboardLesson] = useState(LESSONS[0]);
       const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
       const [isRecording, setIsRecording] = useState(false);
       const [recognizedText, setRecognizedText] = useState('');
@@ -295,77 +313,98 @@
       };
 
       useEffect(() => {
-        const lessonRef = db.ref('leaderboard/' + selectedLesson.id);
-        const listener = lessonRef.orderByChild('score').on('value', (snapshot) => {
+        const lessonRef = db.ref('leaderboard/' + leaderboardLesson.id);
+        const listener = lessonRef.orderByChild('timestamp').on('value', (snapshot) => {
           const rawData = [];
           snapshot.forEach((childSnapshot) => {
             rawData.push({ id: childSnapshot.key, ...childSnapshot.val() });
           });
 
-          // 🌟 將資料依據「學生姓名」進行分組
-          const userRecords = {};
+          const userGroups = {};
           rawData.forEach(record => {
-            if (!userRecords[record.name]) userRecords[record.name] = [];
-            userRecords[record.name].push(record);
+            if (!userGroups[record.name]) userGroups[record.name] = [];
+            userGroups[record.name].push(record);
           });
 
-          const filteredData = [];
-
-          Object.values(userRecords).forEach(records => {
-            // 1. 找最新紀錄 (依時間戳記降冪排序)
+          const aggregatedData = [];
+          Object.keys(userGroups).forEach(name => {
+            const records = userGroups[name];
+            
+            const uniqueDates = new Set(records.map(r => new Date(r.timestamp).toLocaleDateString('zh-TW')));
+            const daysCount = uniqueDates.size;
+            
+            const totalTries = records.length; 
+            
             records.sort((a, b) => b.timestamp - a.timestamp);
             const latestRecord = records[0];
+            const lastUpdateStr = new Date(latestRecord.timestamp).toLocaleString('zh-TW', {
+              month: 'numeric', day: 'numeric', hour: '2-digit', minute:'2-digit'
+            });
 
-            // 2. 找最佳紀錄 (分數高 -> 次數少 -> 時間新)
-            records.sort((a, b) => b.score - a.score || (a.attempts || 999) - (b.attempts || 999) || b.timestamp - a.timestamp);
+            records.sort((a, b) => {
+              if (b.score !== a.score) return b.score - a.score;
+              if ((a.attempts || 999) !== (b.attempts || 999)) return (a.attempts || 999) - (b.attempts || 999);
+              return b.timestamp - a.timestamp;
+            });
             const bestRecord = records[0];
 
-            // 如果最新紀錄跟最佳紀錄「是同一筆」，不加標籤，只顯示一筆
             if (latestRecord.id === bestRecord.id) {
-              filteredData.push(bestRecord);
+              aggregatedData.push({
+                id: bestRecord.id,
+                name: name,
+                avatar: bestRecord.avatar || '👤',
+                bestScore: bestRecord.score,
+                daysCount: daysCount,
+                totalTries: totalTries,
+                lastUpdate: lastUpdateStr,
+                lastTimestamp: latestRecord.timestamp
+              });
             } else {
-              // 如果不一樣，就把兩筆都加進去，並在名字後方加上標示方便辨識
-              filteredData.push({ ...bestRecord, name: bestRecord.name + ' (最高)' });
-              filteredData.push({ ...latestRecord, name: latestRecord.name + ' (最新)' });
+              aggregatedData.push({
+                id: bestRecord.id,
+                name: name + ' (最高)',
+                avatar: bestRecord.avatar || '👤',
+                bestScore: bestRecord.score,
+                daysCount: daysCount,
+                totalTries: totalTries,
+                lastUpdate: new Date(bestRecord.timestamp).toLocaleString('zh-TW', { month: 'numeric', day: 'numeric', hour: '2-digit', minute:'2-digit' }),
+                lastTimestamp: bestRecord.timestamp
+              });
+              aggregatedData.push({
+                id: latestRecord.id,
+                name: name + ' (最新)',
+                avatar: latestRecord.avatar || '👤',
+                bestScore: latestRecord.score,
+                daysCount: daysCount,
+                totalTries: totalTries,
+                lastUpdate: lastUpdateStr,
+                lastTimestamp: latestRecord.timestamp
+              });
             }
           });
 
-          // 🌟 最終大排序：分數高 -> 嘗試次數少 -> 時間新
-          filteredData.sort((a, b) => b.score - a.score || (a.attempts || 999) - (b.attempts || 999) || b.timestamp - a.timestamp);
-          setLeaderboardData(filteredData);
+          aggregatedData.sort((a, b) => {
+            if (b.bestScore !== a.bestScore) return b.bestScore - a.bestScore;
+            if (b.daysCount !== a.daysCount) return b.daysCount - a.daysCount;
+            if (a.totalTries !== b.totalTries) return a.totalTries - b.totalTries;
+            return b.lastTimestamp - a.lastTimestamp;
+          });
+
+          setLeaderboardData(aggregatedData);
         });
 
         return () => lessonRef.off('value', listener);
-      }, [selectedLesson.id]);
+      }, [leaderboardLesson.id]);
 
       const saveScoreToFirebase = (finalStars) => {
         if (!studentName) return;
         const lessonRef = db.ref('leaderboard/' + selectedLesson.id);
-        const maxStars = selectedLesson.sentences.length * 3;
-        const percentage = maxStars > 0 ? finalStars / maxStars : 0;
-        const baseMinAttempts = selectedLesson.sentences.length;
         
-        let commentCode = 'commentKeepGoing';
-        if (percentage >= 1.0) {
-            if (totalAttempts <= baseMinAttempts) {
-                commentCode = 'commentPerfect';
-            } else if (totalAttempts <= baseMinAttempts + 2) {
-                commentCode = 'commentExcellent';
-            } else {
-                commentCode = 'commentHardworking';
-            }
-        } else if (percentage >= 0.7) {
-            commentCode = 'commentGreat';
-        } else if (percentage >= 0.5) {
-            commentCode = 'commentGood';
-        }
-
         lessonRef.push({
           name: studentName,
           avatar: selectedAvatar,
           score: finalStars,
           attempts: totalAttempts,
-          commentCode: commentCode,
           date: new Date().toLocaleDateString('zh-TW'),
           timestamp: firebase.database.ServerValue.TIMESTAMP
         });
@@ -382,7 +421,7 @@
         const lessonParam = urlParams.get('lesson');
         if (lessonParam) {
           const foundLesson = LESSONS.find(l => l.id === lessonParam);
-          if (foundLesson) setSelectedLesson(foundLesson);
+          if (foundLesson) { setSelectedLesson(foundLesson); setLeaderboardLesson(foundLesson); }
         }
       }, []);
 
@@ -538,10 +577,10 @@
         setPhoneticMode(lang === 'zh' ? 'zhuyin' : 'pinyin');
         if ('speechSynthesis' in window) {
           window.speechSynthesis.cancel();
-          const ut = new SpeechSynthesisUtterance(targetSentenceObj.text);
-          ut.lang = 'zh-TW';
-          ut.rate = 0.85;
-          window.speechSynthesis.speak(ut);
+          const utterance = new SpeechSynthesisUtterance(getTtsText(targetSentenceObj.text));
+          utterance.lang = 'zh-TW';
+          utterance.rate = 0.85;
+          window.speechSynthesis.speak(utterance);
         }
       };
 
@@ -603,10 +642,25 @@
 
       const LeaderboardModal = () => (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm transition-opacity">
-          <div className="bg-white rounded-[2rem] w-full max-w-lg shadow-2xl overflow-hidden animate-fade-in-up border-4 border-yellow-400 flex flex-col max-h-[80vh]">
+          <div className="bg-white rounded-[2rem] w-full max-w-2xl shadow-2xl overflow-hidden animate-fade-in-up border-4 border-yellow-400 flex flex-col max-h-[85vh]">
             <div className="bg-gradient-to-r from-yellow-400 to-orange-400 p-4 text-white flex justify-between items-center shrink-0">
               <h2 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
-                <Trophy className="w-6 h-6 sm:w-8 sm:h-8" /> {t.leaderboard} - {selectedLesson.id}
+                <Trophy className="w-6 h-6 sm:w-8 sm:h-8" />
+                <select 
+                  className="bg-white text-orange-500 font-bold rounded-full px-2 py-1 outline-none cursor-pointer text-sm sm:text-base shadow-sm border-2 border-yellow-200"
+                  value={leaderboardLesson.id}
+                  onChange={(e) => {
+                    playSound('pop');
+                    const lesson = LESSONS.find(l => l.id === e.target.value);
+                    setLeaderboardLesson(lesson);
+                  }}
+                >
+                  {LESSONS.map(l => (
+                    <option key={l.id} value={l.id}>
+                      {lang === 'zh' ? `${l.id} ${l.title.split('：')[1]}` : l.titleEn}
+                    </option>
+                  ))}
+                </select>
               </h2>
               <button onClick={() => {playSound('pop'); setShowLeaderboard(false);}} className="p-1 hover:bg-white/20 rounded-full transition-colors">
                 <XIcon className="w-6 h-6" />
@@ -620,30 +674,37 @@
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="text-gray-500 text-sm border-b-2 border-gray-200">
-                      <th className="pb-2 text-center w-12">{t.rank}</th>
+                      <th className="pb-2 text-center w-10 sm:w-12">{t.rank}</th>
                       <th className="pb-2 pl-2">{t.name}</th>
-                      <th className="pb-2 text-center">{t.score}</th>
-                      <th className="pb-2 pl-2 hidden sm:table-cell">{t.date}</th>
-                      <th className="pb-2 pl-2">{t.comment}</th>
+                      <th className="pb-2 text-center whitespace-nowrap">{t.score}</th>
+                      <th className="pb-2 text-center text-xs sm:text-sm whitespace-nowrap">{t.practiceStat}</th>
+                      <th className="pb-2 text-center text-xs sm:text-sm hidden sm:table-cell whitespace-nowrap">{t.lastUpdate}</th>
                     </tr>
                   </thead>
                   <tbody>
                     {leaderboardData.map((record, index) => (
-                      <tr key={record.id} className="border-b border-gray-100 hover:bg-orange-50 transition-colors">
+                      <tr key={`${record.id}-${index}`} className="border-b border-gray-100 hover:bg-orange-50 transition-colors">
                         <td className="py-3 text-center">
                           {index === 0 ? <span className="text-2xl">🥇</span> : 
                            index === 1 ? <span className="text-2xl">🥈</span> : 
                            index === 2 ? <span className="text-2xl">🥉</span> : 
                            <span className="text-gray-400 font-bold">{index + 1}</span>}
                         </td>
-                        <td className="py-3 pl-2 font-bold text-gray-700">
-                          <span className="text-xl mr-1">{record.avatar || '👤'}</span> {record.name}
+                        <td className="py-3 pl-2 font-bold text-gray-700 whitespace-nowrap">
+                          <span className="text-lg sm:text-xl mr-1">{record.avatar}</span> <span className="text-sm sm:text-base">{record.name}</span>
                         </td>
-                        <td className="py-3 text-center font-bold text-orange-500 flex justify-center items-center gap-1">
-                          {record.score} <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                        <td className="py-3 text-center font-bold text-orange-500">
+                          <div className="flex justify-center items-center gap-1">
+                            {record.bestScore} <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-yellow-400 text-yellow-400" />
+                          </div>
                         </td>
-                        <td className="py-3 pl-2 text-xs text-gray-400 hidden sm:table-cell">{record.date}</td>
-                        <td className="py-3 pl-2 text-sm font-medium text-pink-500">{t[record.commentCode]}</td>
+                        <td className="py-3 text-center whitespace-nowrap">
+                          <div className="text-xs sm:text-sm font-bold text-pink-500">🔥 {record.daysCount} 天</div>
+                          <div className="text-[10px] sm:text-xs text-gray-400 mt-0.5">🔄 {record.totalTries} 次</div>
+                        </td>
+                        <td className="py-3 text-center text-xs text-gray-500 hidden sm:table-cell">
+                          {record.lastUpdate}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -774,7 +835,7 @@
               <button onClick={() => scrollLessons('left')} className="absolute left-0 top-1/2 -translate-y-1/2 -mt-2 bg-white p-2 rounded-full shadow-[0_4px_0_0_#fed7aa] active:translate-y-[4px] active:shadow-none z-10 hover:bg-orange-50 hidden md:block border-2 border-orange-100"><svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg></button>
               <div ref={lessonListRef} className="flex overflow-x-auto pb-4 gap-3 sm:gap-4 scrollbar-hide snap-x px-4 sm:px-12 mx-0 md:mx-6">
                 {LESSONS.map((lesson) => (
-                  <button key={lesson.id} onClick={() => { playSound('pop'); setSelectedLesson(lesson); }} className={`whitespace-nowrap px-5 py-3 rounded-2xl text-sm sm:text-base font-medium transition-all snap-start flex-shrink-0 ${selectedLesson.id === lesson.id ? 'bg-gradient-to-b from-orange-400 to-orange-500 text-white shadow-[0_6px_0_0_#ea580c] transform -translate-y-1 border-2 border-orange-400' : 'bg-white text-gray-500 shadow-[0_4px_0_0_#e5e7eb] hover:translate-y-[-2px] border-2 border-gray-100'}`}>{lang === 'zh' ? `${lesson.id} ${lesson.title.split('：')[1]}` : lesson.titleEn}</button>
+                  <button key={lesson.id} onClick={() => { playSound('pop'); setSelectedLesson(lesson); setLeaderboardLesson(lesson); }} className={`whitespace-nowrap px-5 py-3 rounded-2xl text-sm sm:text-base font-medium transition-all snap-start flex-shrink-0 ${selectedLesson.id === lesson.id ? 'bg-gradient-to-b from-orange-400 to-orange-500 text-white shadow-[0_6px_0_0_#ea580c] transform -translate-y-1 border-2 border-orange-400' : 'bg-white text-gray-500 shadow-[0_4px_0_0_#e5e7eb] hover:translate-y-[-2px] border-2 border-gray-100'}`}>{lang === 'zh' ? `${lesson.id} ${lesson.title.split('：')[1]}` : lesson.titleEn}</button>
                 ))}
               </div>
               <button onClick={() => scrollLessons('right')} className="absolute right-0 top-1/2 -translate-y-1/2 -mt-2 bg-white p-2 rounded-full shadow-[0_4px_0_0_#fed7aa] active:translate-y-[4px] active:shadow-none z-10 hover:bg-orange-50 hidden md:block border-2 border-orange-100"><svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></button>
@@ -842,7 +903,7 @@
             </div>
           </main>
 
-          {/* 🌟 獨立彈出的星星結算畫面 (置中顯示) */}
+          {/* 🌟 獨立彈出的星星結算畫面 (已改為置中顯示) */}
           {result && !isRecording && (
             <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/20 transition-opacity duration-300">
               <div className="bg-white/95 backdrop-blur-none rounded-[2.5rem] p-6 sm:p-8 max-w-md w-full text-center shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] animate-fade-in-up border-[6px] sm:border-[8px] border-white relative">
