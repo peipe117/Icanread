@@ -312,6 +312,7 @@
         }
       };
 
+      // 🌟 將資料依據「學生姓名（不分大小寫）」分組，每人只保留「唯一一行」完美紀錄
       useEffect(() => {
         const lessonRef = db.ref('leaderboard/' + leaderboardLesson.id);
         const listener = lessonRef.orderByChild('timestamp').on('value', (snapshot) => {
@@ -322,25 +323,39 @@
 
           const userGroups = {};
           rawData.forEach(record => {
-            if (!userGroups[record.name]) userGroups[record.name] = [];
-            userGroups[record.name].push(record);
+            // 🌟 自動忽略大小寫與前後空白，確保 Camila 和 camila 會被歸類在一起
+            const rawName = record.name || "";
+            const normalizedName = rawName.trim().toLowerCase();
+            
+            if (!userGroups[normalizedName]) {
+              userGroups[normalizedName] = {
+                displayName: rawName.trim(), // 畫面上依然保留學生原本輸入的樣子
+                records: []
+              };
+            }
+            userGroups[normalizedName].records.push(record);
           });
 
           const aggregatedData = [];
-          Object.keys(userGroups).forEach(name => {
-            const records = userGroups[name];
+          Object.keys(userGroups).forEach(normalizedName => {
+            const group = userGroups[normalizedName];
+            const records = group.records;
             
+            // 計算這個學生在這課練習了「幾天」
             const uniqueDates = new Set(records.map(r => new Date(r.timestamp).toLocaleDateString('zh-TW')));
             const daysCount = uniqueDates.size;
             
+            // 計算這個學生在這課總共按了「幾次」挑戰（完成闖關的紀錄筆數）
             const totalTries = records.length; 
             
+            // 找最新紀錄 (為了獲取「最後更新時間」)
             records.sort((a, b) => b.timestamp - a.timestamp);
             const latestRecord = records[0];
             const lastUpdateStr = new Date(latestRecord.timestamp).toLocaleString('zh-TW', {
               month: 'numeric', day: 'numeric', hour: '2-digit', minute:'2-digit'
             });
 
+            // 找最佳成績 (分數最高優先，次數最少次之)
             records.sort((a, b) => {
               if (b.score !== a.score) return b.score - a.score;
               if ((a.attempts || 999) !== (b.attempts || 999)) return (a.attempts || 999) - (b.attempts || 999);
@@ -348,41 +363,20 @@
             });
             const bestRecord = records[0];
 
-            if (latestRecord.id === bestRecord.id) {
-              aggregatedData.push({
-                id: bestRecord.id,
-                name: name,
-                avatar: bestRecord.avatar || '👤',
-                bestScore: bestRecord.score,
-                daysCount: daysCount,
-                totalTries: totalTries,
-                lastUpdate: lastUpdateStr,
-                lastTimestamp: latestRecord.timestamp
-              });
-            } else {
-              aggregatedData.push({
-                id: bestRecord.id,
-                name: name + ' (最高)',
-                avatar: bestRecord.avatar || '👤',
-                bestScore: bestRecord.score,
-                daysCount: daysCount,
-                totalTries: totalTries,
-                lastUpdate: new Date(bestRecord.timestamp).toLocaleString('zh-TW', { month: 'numeric', day: 'numeric', hour: '2-digit', minute:'2-digit' }),
-                lastTimestamp: bestRecord.timestamp
-              });
-              aggregatedData.push({
-                id: latestRecord.id,
-                name: name + ' (最新)',
-                avatar: latestRecord.avatar || '👤',
-                bestScore: latestRecord.score,
-                daysCount: daysCount,
-                totalTries: totalTries,
-                lastUpdate: lastUpdateStr,
-                lastTimestamp: latestRecord.timestamp
-              });
-            }
+            // 🌟 每個人只 push 一筆資料到排行榜，融合了最高分與最新進度
+            aggregatedData.push({
+              id: bestRecord.id,
+              name: group.displayName, // 顯示原本的名字
+              avatar: bestRecord.avatar || '👤',
+              bestScore: bestRecord.score, // 顯示最高分
+              daysCount: daysCount, // 顯示最新天數
+              totalTries: totalTries, // 顯示最新次數
+              lastUpdate: lastUpdateStr, // 顯示最新時間
+              lastTimestamp: latestRecord.timestamp
+            });
           });
 
+          // 🌟 最終排序邏輯：1.分數最高 2.練習天數最多 3.挑戰次數最少 4.最新更新時間
           aggregatedData.sort((a, b) => {
             if (b.bestScore !== a.bestScore) return b.bestScore - a.bestScore;
             if (b.daysCount !== a.daysCount) return b.daysCount - a.daysCount;
