@@ -104,6 +104,7 @@
     const Trophy = (props) => <IconBase className={props.className} fill={props.fill}><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></IconBase>;
     const XIcon = (props) => <IconBase className={props.className} fill={props.fill}><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></IconBase>;
     const ListIcon = (props) => <IconBase className={props.className} fill={props.fill}><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></IconBase>;
+    const SettingsIcon = (props) => <IconBase className={props.className} fill={props.fill}><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></IconBase>;
 
     const AVATARS = ['🐱', '🐶', '🦊', '🐰', '🐻', '🐼', '🐯', '🦁', '🦄', '🐲', '🐦‍🔥', '🦖'];
 
@@ -151,7 +152,7 @@
     // --- 完整課程資料 (含拼音與專屬寶物) ---
     const LESSONS = [
       { id: 'L1', treasure: '📚', treasureName: '華語課本', treasureNameEn: 'Textbook', title: '第一課：新同學', titleEn: 'Lesson 1: New Classmates', sentences: [ { text: "今天，我們有兩個新同學，現在請他們介紹自己。", zhuyinStr: "ㄐㄧㄣ ㄊㄧㄢ _ ㄨㄛˇ ㄇㄣ˙ ㄧㄡˇ ㄌㄧㄤˇ ㄍㄜ˙ ㄒㄧㄣ ㄊㄨㄥˊ ㄒㄩㄝˊ _ ㄒㄧㄢˋ ㄗㄞˋ ㄑㄧㄥˇ ㄊㄚ ㄇㄣ˙ ㄐㄧㄝˋ ㄕㄠˋ ㄗˋ ㄐㄧˇ _", pinyinStr: "jīn tiān _ wǒ men yǒu liǎng ge xīn tóng xué _ xiàn zài qǐng tā men jiè shào zì jǐ _" }, { text: "大家好，我叫方友朋，今年八歲，我最喜歡跟爸爸一起游泳。", zhuyinStr: "ㄉㄚˋ ㄐㄧㄚ ㄏㄠˇ _ ㄨㄛˇ ㄐㄧㄠˋ ㄈㄤ ㄧㄡˇ ㄆㄥˊ _ ㄐㄧㄣ ㄋㄧㄢˊ ㄅㄚ ㄙㄨㄟˋ _ ㄨㄛˇ ㄗㄨㄟˋ ㄒㄧˇ ㄏㄨㄢ ㄍㄣ ㄅㄚˋ ㄅㄚ˙ ㄧˋ ㄑㄧˇ ㄧㄡˊ ㄩㄥˇ _", pinyinStr: "dà jiā hǎo _ wǒ jiào fāng yǒu péng _ jīn nián bā suì _ wǒ zuì xǐ huān gēn bà ba yì qǐ yóu yǒng _" }, { text: "大家好，我叫張莉，今年七歲，我比較喜歡看書。", zhuyinStr: "ㄉㄚˋ ㄐㄧㄚ ㄏㄠˇ _ ㄨㄛˇ ㄐㄧㄠˋ ㄓㄤ ㄌㄧˋ _ ㄐㄧㄣ ㄋㄧㄢˊ ㄑㄧ ㄙㄨㄟˋ _ ㄨㄛˇ ㄅㄧˇ ㄐㄧㄠˋ ㄒㄧˇ ㄏㄨㄢ ㄎㄢˋ ㄕㄨ _", pinyinStr: "dà jiā hǎo _ wǒ jiào zhāng lì _ jīn nián qī suì _ wǒ bǐ jiào xǐ huān kàn shū _" }, { text: "你們好，我叫李大文。很高興認識你們。", zhuyinStr: "ㄋㄧˇ ㄇㄣ˙ ㄏㄠˇ _ ㄨㄛˇ ㄐㄧㄠˋ ㄌㄧˇ ㄉㄚˋ ㄨㄣˊ _ ㄏㄣˇ ㄍㄠ ㄒㄧㄥˋ ㄖㄣˋ ㄕ˙ ㄋㄧˇ ㄇㄣ˙ _", pinyinStr: "nǐ men hǎo _ wǒ jiào lǐ dà wén _ hěn gāo xìng rèn shi nǐ men _" }, { text: "歡迎你們來中文學校學華語。", zhuyinStr: "ㄏㄨㄢ ㄧㄥˊ ㄋㄧˇ ㄇㄣ˙ ㄌㄞˊ ㄓㄨㄥ ㄨㄣˊ ㄒㄩㄝˊ ㄒㄧㄠˋ ㄒㄩㄝˊ ㄏㄨㄚˊ ㄩˇ _", pinyinStr: "huān yíng nǐ men lái zhōng wén xué xiào xué huá yǔ _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
-      { id: 'L2', treasure: '🖼️', treasureName: '照片相框', treasureNameEn: 'Photo Frame', title: '第二課：我爸爸做生意', titleEn: 'Lesson 2: My Dad Does Business', sentences: [ { text: "張莉，照片裡面的人是誰？", zhuyinStr: "ㄓㄤ ㄌㄧˋ _ ㄓㄠˋ ㄆㄧㄢˋ ㄌㄧˇ ㄇㄧㄢˋ ㄉㄜ˙ ㄖㄣˊ ㄕˋ ㄕㄟˊ _", pinyinStr: "zhāng lì _ zhào piàn lǐ miàn de rén shì shéi _" }, { text: "左邊是我外公，他以前是醫生，右邊是我外婆。", zhuyinStr: "ㄗㄨㄛˇ ㄅㄧㄢ ㄕˋ ㄨㄛˇ ㄨㄞˋ ㄍㄨㄥ _ ㄊㄚ ㄧˇ ㄑㄧㄢˊ ㄕˋ ㄧ ㄕㄥ _ ㄧㄡˋ ㄅㄧㄢ ㄕˋ ㄨㄛˇ ㄨㄞˋ ㄆㄛˊ _", pinyinStr: "zuǒ biān shì wǒ wài gōng _ tā yǐ qián shì yī shēng _ yòu biān shì wǒ wài pó _" }, { text: "你爸爸媽媽做什麼工作？", zhuyinStr: "ㄋㄧˇ ㄅㄚˋ ㄅㄚ˙ ㄇㄚ ㄇㄚ˙ ㄗㄨㄛˋ ㄕㄣˊ ㄇㄜ˙ ㄍㄨㄥ ㄗㄨㄛˋ _", pinyinStr: "nǐ bà ba mā ma zuò shén me gōng zuò _" }, { text: "我爸爸做生意，我媽媽幫他。你爸爸媽媽呢？", zhuyinStr: "ㄨㄛˇ ㄅㄚˋ ㄅㄚ˙ ㄗㄨㄛˋ ㄕㄥ ㄧˋ _ ㄨㄛˇ ㄇㄚ ㄇㄚ˙ ㄅㄤ ㄊㄚ _ ㄋㄧˇ ㄅㄚˋ ㄅㄚ˙ ㄇㄚ ㄇㄚ˙ ㄋㄜ˙ _", pinyinStr: "wǒ bà ba zuò shēng yì _ wǒ mā ma bāng tā _ nǐ bà ba mā ma ne _" }, { text: "我爸爸在電腦公司上班，我媽媽在銀行工作。", zhuyinStr: "ㄨㄛˇ ㄅㄚˋ ㄅㄚ˙ ㄗㄞˋ ㄉㄧㄢˋ ㄋㄠˇ ㄍㄨㄥ ㄙ ㄕㄤˋ ㄅㄢ _ ㄨㄛˇ ㄇㄚ ㄇㄚ˙ ㄗㄞˋ ㄧㄣˊ ㄏㄤˊ ㄍㄨㄥ ㄗㄨㄛˋ _", pinyinStr: "wǒ bà ba zài diàn nǎo gōng sī shàng bān _ wǒ mā ma zài yín háng gōng zuò _" }, { text: "你以後想做什麼？", zhuyinStr: "ㄋㄧˇ ㄧˇ ㄏㄡˋ ㄒㄧㄤˇ ㄗㄨㄛˋ ㄕㄣˊ ㄇㄜ˙ _", pinyinStr: "nǐ yǐ hòu xiǎng zuò shén me _" }, { text: "我以後想跟爸爸一樣。", zhuyinStr: "ㄨㄛˇ ㄧˇ ㄏㄡˋ ㄒㄧㄤˇ ㄍㄣ ㄅㄚˋ ㄅㄚ˙ ㄧˊ ㄧㄤˋ _", pinyinStr: "wǒ yǐ hòu xiǎng gēn bà ba yí yàng _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
+      { id: 'L2', treasure: '🖼️', treasureName: '照片相框', treasureNameEn: 'Photo Frame', title: '第二課：我爸爸做生意', titleEn: 'Lesson 2: My Dad Does Business', sentences: [ { text: "張莉，照片裡面的人是誰？", zhuyinStr: "ㄓㄤ ㄌㄧˋ _ ㄓㄠˋ ㄆㄧㄢˋ ㄌㄧˇ ㄇㄧㄢˋ ㄉㄜ˙ ㄖㄣˊ ㄕˋ ㄕㄟˊ _", pinyinStr: "zhāng lì _ zhào piàn lǐ miàn de rén shì shéi _" }, { text: "左邊是我外公，他以前是醫生，右邊是我外婆。", zhuyinStr: "ㄗㄨㄛˇ ㄅㄧㄢ ㄕˋ ㄨㄛˇ ㄨㄞˋ ㄍㄨㄥ _ ㄊㄚ ㄧˇ ㄑㄧㄢˊ ㄕˋ ㄧ ㄕㄥ _ ㄧㄡˋ ㄅㄧㄢ ㄕˋ ㄨㄛˇ ㄨㄞˋ ㄆㄛˊ _", pinyinStr: "zuǒ biān shì wǒ wài gōng _ tā yǐ qián shì yǐ qián shì yī shēng _ yòu biān shì wǒ wài pó _" }, { text: "你爸爸媽媽做什麼工作？", zhuyinStr: "ㄋㄧˇ ㄅㄚˋ ㄅㄚ˙ ㄇㄚ ㄇㄚ˙ ㄗㄨㄛˋ ㄕㄣˊ ㄇㄜ˙ ㄍㄨㄥ ㄗㄨㄛˋ _", pinyinStr: "nǐ bà ba mā ma zuò shén me gōng zuò _" }, { text: "我爸爸做生意，我媽媽幫他。你爸爸媽媽呢？", zhuyinStr: "ㄨㄛˇ ㄅㄚˋ ㄅㄚ˙ ㄗㄨㄛˋ ㄕㄥ ㄧˋ _ ㄨㄛˇ ㄇㄚ ㄇㄚ˙ ㄅㄤ ㄊㄚ _ ㄋㄧˇ ㄅㄚˋ ㄅㄚ˙ ㄇㄚ ㄇㄚ˙ ㄋㄜ˙ _", pinyinStr: "wǒ bà ba zuò shēng yì _ wǒ mā ma bāng tā _ nǐ bà ba mā ma ne _" }, { text: "我爸爸在電腦公司上班，我媽媽在銀行工作。", zhuyinStr: "ㄨㄛˇ ㄅㄚˋ ㄅㄚ˙ ㄗㄞˋ ㄉㄧㄢˋ ㄋㄠˇ ㄍㄨㄥ ㄙ ㄕㄤˋ ㄅㄢ _ ㄨㄛˇ ㄇㄚ ㄇㄚ˙ ㄗㄞˋ ㄧㄣˊ ㄏㄤˊ ㄍㄨㄥ ㄗㄨㄛˋ _", pinyinStr: "wǒ bà ba zài diàn nǎo gōng sī shàng bān _ wǒ mā ma zài yín háng gōng zuò _" }, { text: "你以後想做什麼？", zhuyinStr: "ㄋㄧˇ ㄧˇ ㄏㄡˋ ㄒㄧㄤˇ ㄗㄨㄛˋ ㄕㄣˊ ㄇㄜ˙ _", pinyinStr: "nǐ yǐ hòu xiǎng zuò shén me _" }, { text: "我以後想跟爸爸一樣。", zhuyinStr: "ㄨㄛˇ ㄧˇ ㄏㄡˋ ㄒㄧㄤˇ ㄍㄣ ㄅㄚˋ ㄅㄚ˙ ㄧˊ ㄧㄤˋ _", pinyinStr: "wǒ yǐ hòu xiǎng gēn bà ba yí yàng _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
       { id: 'L3', treasure: '🛒', treasureName: '超市推車', treasureNameEn: 'Shopping Cart', title: '第三課：去超級市場', titleEn: 'Lesson 3: Going to the Supermarket', sentences: [ { text: "媽媽，你要去哪裡？", zhuyinStr: "ㄇㄚ ㄇㄚ˙ _ ㄋㄧˇ ㄧㄠˋ ㄑㄩˋ ㄋㄚˇ ㄌㄧˇ _", pinyinStr: "mā ma _ nǐ yào qù nǎ lǐ _" }, { text: "我要去附近的超級市場買東西，你要跟我一起去嗎？", zhuyinStr: "ㄨㄛˇ ㄧㄠˋ ㄑㄩˋ ㄈㄨˋ ㄐㄧㄣˋ ㄉㄜ˙ ㄔㄠ ㄐㄧˊ ㄕˋ ㄔㄤˇ ㄇㄞˇ ㄉㄨㄥ ㄒㄧ _ ㄋㄧˇ ㄧㄠˋ ㄍㄣ ㄨㄛˇ ㄧˋ ㄑㄧˇ ㄑㄩˋ ㄇㄚ˙ _", pinyinStr: "wǒ yào qù fù jìn de chāo jí shì chǎng mǎi dōng xi _ nǐ yào gēn wǒ yì qǐ qù ma _" }, { text: "要，我想去買巧克力冰淇淋。", zhuyinStr: "ㄧㄠˋ _ ㄨㄛˇ ㄒㄧㄤˇ ㄑㄩˋ ㄇㄞˇ ㄑㄧㄠˇ ㄎㄜˋ ㄌㄧˋ ㄅㄧㄥ ㄑㄧˊ ㄌㄧㄣˊ _", pinyinStr: "yào _ wǒ xiǎng qù mǎi qiǎo kè lì bīng qí lín _" }, { text: "你今天要買什麼？", zhuyinStr: "ㄋㄧˇ ㄐㄧㄣ ㄊㄧㄢ ㄧㄠˋ ㄇㄞˇ ㄕㄣˊ ㄇㄜ˙ _", pinyinStr: "nǐ jīn tiān yào mǎi shén me _" }, { text: "我今天要買魚、牛肉、青菜，還要買米。", zhuyinStr: "ㄨㄛˇ ㄐㄧㄣ ㄊㄧㄢ ㄧㄠˋ ㄇㄞˇ ㄩˊ _ ㄋㄧㄡˊ ㄖㄡˋ _ ㄑㄧㄥ ㄘㄞˋ _ ㄏㄞˊ ㄧㄠˋ ㄇㄞˇ ㄇㄧˇ _", pinyinStr: "wǒ jīn tiān yào mǎi yú _ niú ròu _ qīng cài _ hái yào mǎi mǐ _" }, { text: "我也可以買糖果嗎？", zhuyinStr: "ㄨㄛˇ ㄧㄝˇ ㄎㄜˇ ㄧˇ ㄇㄞˇ ㄊㄤˊ ㄍㄨㄛˇ ㄇㄚ˙ _", pinyinStr: "wǒ yě kě yǐ mǎi táng guǒ ma _" }, { text: "我們去看一下吧！", zhuyinStr: "ㄨㄛˇ ㄇㄣ˙ ㄑㄩˋ ㄎㄢˋ ㄧˊ ㄒㄧㄚˋ ㄅㄚ˙ _", pinyinStr: "wǒ men qù kàn yí xià ba _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
       { id: 'L4', treasure: '🍔', treasureName: '漢堡', treasureNameEn: 'Hamburger', title: '第四課：我想吃漢堡', titleEn: 'Lesson 4: I Want a Hamburger', sentences: [ { text: "我想吃漢堡跟薯條，我們可不可以出去吃？", zhuyinStr: "ㄨㄛˇ ㄒㄧㄤˇ ㄔ ㄏㄢˋ ㄅㄠˇ ㄍㄣ ㄕㄨˇ ㄊㄧㄠˊ _ ㄨㄛˇ ㄇㄣ˙ ㄎㄜˇ ㄅㄨˋ ㄎㄜˇ ㄧˇ ㄔㄨ ㄑㄩˋ ㄔ _", pinyinStr: "wǒ xiǎng chī hàn bǎo gēn shǔ tiáo _ wǒ men kě bù kě yǐ chū qù chī _" }, { text: "今天先在家吃，週末再出去吃吧！", zhuyinStr: "ㄐㄧㄣ ㄊㄧㄢ ㄒㄧㄢ ㄗㄞˋ ㄐㄧㄚ ㄔ _ ㄓㄡ ㄇㄛˋ ㄗㄞˋ ㄔㄨ ㄑㄩˋ ㄔ ㄅㄚ˙ _", pinyinStr: "jīn tiān xiān zài jiā chī _ zhōu mò zài chū qù chī ba _" }, { text: "今天晚餐想吃什麼？", zhuyinStr: "ㄐㄧㄣ ㄊㄧㄢ ㄨㄢˇ ㄘㄢ ㄒㄧㄤˇ ㄔ ㄕㄣˊ ㄇㄜ˙ _", pinyinStr: "jīn tiān wǎn cān xiǎng chī shén me _" }, { text: "我想吃麵。文文，你呢？", zhuyinStr: "ㄨㄛˇ ㄒㄧㄤˇ ㄔ ㄇㄧㄢˋ _ ㄨㄣˊ ㄨㄣˊ _ ㄋㄧˇ ㄋㄜ˙ _", pinyinStr: "wǒ xiǎng chī miàn _ wén wen _ nǐ ne _" }, { text: "我想吃蛋炒飯，有湯嗎？", zhuyinStr: "ㄨㄛˇ ㄒㄧㄤˇ ㄔ ㄉㄢˋ ㄔㄠˇ ㄈㄢˋ _ ㄧㄡˇ ㄊㄤ ㄇㄚ˙ _", pinyinStr: "wǒ xiǎng chī dàn chǎo fàn _ yǒu tāng ma _" }, { text: "我已經做了玉米湯。", zhuyinStr: "ㄨㄛˇ ㄧˇ ㄐㄧㄥ ㄗㄨㄛˋ ㄌㄜ˙ ㄩˋ ㄇㄧˇ ㄊㄤ _", pinyinStr: "wǒ yǐ jīng zuò le yù mǐ tāng _" }, { text: "媽，我現在很餓，想快點吃晚飯，好嗎？", zhuyinStr: "ㄇㄚ _ ㄨㄛˇ ㄒㄧㄢˋ ㄗㄞˋ ㄏㄣˇ ㄜˋ _ ㄒㄧㄤˇ ㄎㄨㄞˋ ㄉㄧㄢˇ ㄔ ㄨㄢˇ ㄈㄢˋ _ ㄏㄠˇ ㄇㄚ˙ _", pinyinStr: "mā _ wǒ xiàn zài hěn è _ xiǎng kuài diǎn chī wǎn fàn _ hǎo ma _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
       { id: 'L5', treasure: '🍁', treasureName: '秋天葉子', treasureNameEn: 'Autumn Leaf', title: '第五課：春天快到了', titleEn: 'Lesson 5: Spring is Coming', sentences: [ { text: "你看！樹葉變黃了，秋天快到了。", zhuyinStr: "ㄋㄧˇ ㄎㄢˋ _ ㄕㄨˋ ㄧㄝˋ ㄅㄧㄢˋ ㄏㄨㄤˊ ㄌㄜ˙ _ ㄑㄧㄡ ㄊㄧㄢ ㄎㄨㄞˋ ㄉㄠˋ ㄌㄜ˙ _", pinyinStr: "nǐ kàn _ shù yè biàn huáng le _ qiū tiān kuài dào le _" }, { text: "可是草還是綠色的。", zhuyinStr: "ㄎㄜˇ ㄕˋ ㄘㄠˇ ㄏㄞˊ ㄕˋ ㄌㄩˋ ㄙㄜˋ ㄉㄜ˙ _", pinyinStr: "kě shì cǎo hái shì lǜ sè de _" }, { text: "秋天天氣很好，我覺得很舒服。", zhuyinStr: "ㄑㄧㄡ ㄊㄧㄢ ㄊㄧㄢ ㄑㄧˋ ㄏㄣˇ ㄏㄠˇ _ ㄨㄛˇ ㄐㄩㄝˊ ㄉㄜ˙ ㄏㄣˇ ㄕㄨ ㄈㄨˊ _", pinyinStr: "qiū tiān tiān qì hěn hǎo _ wǒ jué de hěn shū fu _" }, { text: "春天也不錯。", zhuyinStr: "ㄔㄨㄣ ㄊㄧㄢ ㄧㄝˇ ㄅㄨˊ ㄘㄨㄛˋ _", pinyinStr: "chūn tiān yě bú cuò _" }, { text: "春天的時候，我們家院子有很多顏色的花。", zhuyinStr: "ㄔㄨㄣ ㄊㄧㄢ ㄉㄜ˙ ㄕˊ ㄏㄡˋ _ ㄨㄛˇ ㄇㄣ˙ ㄐㄧㄚ ㄩㄢˋ ㄗ˙ ㄧㄡˇ ㄏㄣˇ ㄉㄨㄛ ㄧㄢˊ ㄙㄜˋ ㄉㄜ˙ ㄏㄨㄚ _", pinyinStr: "chūn tiān de shí hòu _ wǒ men jiā yuàn zi yǒu hěn duō yán sè de huā _" }, { text: "紅色的、白色的都有。", zhuyinStr: "ㄏㄨㄥˊ ㄙㄜˋ ㄉㄜ˙ _ ㄅㄞˊ ㄙㄜˋ ㄉㄜ˙ ㄉㄡ ㄧㄡˇ _", pinyinStr: "hóng sè de _ bái sè de dōu yǒu _" }, { text: "我覺得紅色的花最漂亮。", zhuyinStr: "ㄨㄛˇ ㄐㄩㄝˊ ㄉㄜ˙ ㄏㄨㄥˊ ㄙㄜˋ ㄉㄜ˙ ㄏㄨㄚ ㄗㄨㄟˋ ㄆㄧㄠˋ ㄌㄧㄤˋ _", pinyinStr: "wǒ jué de hóng sè de huā zuì piào liàng _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
@@ -185,11 +186,12 @@
         errNoMic: "找不到麥克風設備，請檢查一下喔！", errMicError: "哎呀，麥克風發生了一點問題 ({error})，請重試！", 
         errStartMic: "啟動麥克風失敗，請稍微等一下再試！", errNoSupport: "抱歉！您的瀏覽器不支援語音辨識，請使用 Google Chrome。", 
         errCopy: "複製失敗，請手動複製上方網址列！", 
-        micNoticeTitle: "⚠️ 手機/平板 使用須知",
+        micNoticeTitle: "⚠️️ 手機/平板 使用須知",
         micNotice1: "請務必允許「麥克風權限」",
         micNotice2: "蘋果 (iPhone/iPad) 請務必使用 Safari",
         micNotice3: "安卓 (Android) 請務必使用 Chrome",
-        leaderboard: "英雄榜", rank: "名次", name: "姓名", score: "最高分", date: "日期", practiceStat: "練習量", lastUpdate: "最後更新", noData: "目前還沒有紀錄，趕快來挑戰吧！", treasureRoom: "寶物庫"
+        leaderboard: "英雄榜", rank: "名次", name: "姓名", score: "最高分", date: "日期", practiceStat: "練習量", lastUpdate: "最後更新", noData: "目前還沒有紀錄，趕快來挑戰吧！", treasureRoom: "寶物庫",
+        settings: "設定", voiceSettings: "老師聲音", langSettings: "介面語言", shareSettings: "分享連結", close: "關閉"
       }, 
       en: { 
         appTitle: "I can Read", appSubtitle: "Let's Learn Mandarin", tipsTitle: "Quick Tips", 
@@ -215,7 +217,8 @@
         micNotice1: "Please 'Allow' microphone access",
         micNotice2: "iOS (iPhone/iPad): Please use Safari",
         micNotice3: "Android: Please use Chrome",
-        leaderboard: "Leaderboard", rank: "Rank", name: "Name", score: "Best Score", date: "Date", practiceStat: "Practice", lastUpdate: "Last Update", noData: "No records yet, be the first!", treasureRoom: "My Treasures"
+        leaderboard: "Leaderboard", rank: "Rank", name: "Name", score: "Best Score", date: "Date", practiceStat: "Practice", lastUpdate: "Last Update", noData: "No records yet, be the first!", treasureRoom: "My Treasures",
+        settings: "Settings", voiceSettings: "Teacher Voice", langSettings: "Language", shareSettings: "Share Link", close: "Close"
       } 
     };
 
@@ -255,7 +258,7 @@
       '舒': ['書', '輸', '叔'], '服': ['福', '符'], '游': ['遊', '由', '尤'], '泳': ['勇', '湧']
     };
 
-    // 🌟 全域音效引擎 (修復重複建立導致崩潰的問題)
+    // 🌟 全域音效引擎
     let audioCtx = null;
     const playSound = (type) => {
       try {
@@ -363,8 +366,35 @@
       const [showTreasureRoom, setShowTreasureRoom] = useState(false);
       const [userTreasures, setUserTreasures] = useState({});
 
+      const [showSettings, setShowSettings] = useState(false);
+      
+      const [availableVoices, setAvailableVoices] = useState([]);
+      const [selectedVoiceURI, setSelectedVoiceURI] = useState('auto');
+
       const recognitionRef = useRef(null);
       const lessonListRef = useRef(null);
+
+      // 🌟 在一開始就先喚醒瀏覽器載入可用語音，並列出所有中文語音
+      useEffect(() => {
+        const loadVoices = () => {
+          if ('speechSynthesis' in window) {
+            const voices = window.speechSynthesis.getVoices();
+            const zhVoices = voices.filter(v => {
+              const name = v.name.toLowerCase();
+              const lang = v.lang.toLowerCase();
+              const isZh = lang.startsWith('zh') || name.includes('chinese') || name.includes('taiwan') || name.includes('mandarin');
+              // 嚴格過濾廣東話、粵語、香港、澳門等語音 (包含 Google 粵語)
+              const isCantonese = name.includes('cantonese') || name.includes('yue') || name.includes('hk') || name.includes('macao') || name.includes('macau') || name.includes('粵語') || name.includes('hong kong') || lang.includes('hk') || lang.includes('yue');
+              return isZh && !isCantonese;
+            });
+            setAvailableVoices(zhVoices);
+          }
+        };
+        if ('speechSynthesis' in window) {
+          loadVoices();
+          window.speechSynthesis.onvoiceschanged = loadVoices;
+        }
+      }, []);
 
       const toggleLanguage = () => { playSound('pop'); setLang(prev => prev === 'zh' ? 'en' : 'zh'); };
 
@@ -558,12 +588,39 @@
       
       const springTransition = { transitionProperty: 'all', transitionDuration: '1000ms', transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)' };
 
+      // 🌟 自動挑選高品質真人語音 (支援手動選擇覆蓋)
+      const applyBestVoice = (utterance) => {
+        const voices = window.speechSynthesis.getVoices();
+        let bestVoice = null;
+        
+        if (selectedVoiceURI !== 'auto') {
+          bestVoice = voices.find(v => v.voiceURI === selectedVoiceURI);
+        }
+        
+        if (!bestVoice) {
+          // 預設自動尋找高品質的台灣/普通話語音
+          const preferredKeywords = ['Yating', 'Xiaoxiao', 'Google 國語', 'HsiaoChen', 'Mei-Jia', 'Ting-Ting', 'Ya-Ling', 'Yunxi'];
+          for (const keyword of preferredKeywords) {
+            bestVoice = voices.find(v => v.name.includes(keyword) && v.lang.startsWith('zh') && !v.name.includes('Cantonese') && !v.name.includes('粵語'));
+            if (bestVoice) break;
+          }
+          if (!bestVoice) bestVoice = voices.find(v => v.lang === 'zh-TW');
+          if (!bestVoice) bestVoice = voices.find(v => v.lang.startsWith('zh'));
+        }
+        
+        if (bestVoice) {
+          utterance.voice = bestVoice;
+        }
+        utterance.rate = 0.85; // 將語速稍微調慢一點點
+      };
+
       const playSingleCharSpeech = (char) => {
         if ('speechSynthesis' in window && removePunctuation(char) !== '') {
           setHasUsedHint(true); 
           playSound('pop'); window.speechSynthesis.cancel(); 
           const utterance = new SpeechSynthesisUtterance(getTtsText(char)); 
           utterance.lang = 'zh-TW'; 
+          applyBestVoice(utterance);
           window.speechSynthesis.speak(utterance);
         }
       };
@@ -659,7 +716,7 @@
           window.speechSynthesis.cancel();
           const utterance = new SpeechSynthesisUtterance(getTtsText(targetSentenceObj.text));
           utterance.lang = 'zh-TW';
-          utterance.rate = 0.85;
+          applyBestVoice(utterance);
           window.speechSynthesis.speak(utterance);
         }
       };
@@ -719,6 +776,42 @@
         } catch (err) { alert(t.errCopy); }
         document.body.removeChild(textArea);
       };
+
+      // 🌟 設定彈窗
+      const renderSettingsModal = () => (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm transition-opacity">
+          <div className="bg-white rounded-[2rem] w-full max-w-sm shadow-2xl overflow-hidden animate-fade-in-up border-4 border-gray-200 flex flex-col">
+            <div className="bg-gray-100 p-4 text-gray-700 flex justify-between items-center shrink-0 border-b-2 border-gray-200">
+              <h2 className="text-xl font-bold flex items-center gap-2">
+                <SettingsIcon className="w-6 h-6 text-gray-500" /> {lang === 'zh' ? '設定' : 'Settings'}
+              </h2>
+              <button onClick={() => {playSound('pop'); setShowSettings(false);}} className="p-1 hover:bg-gray-200 rounded-full transition-colors">
+                <XIcon className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="p-6 flex flex-col gap-6 bg-white text-left max-h-[60vh] overflow-y-auto">
+              <div>
+                <label className="block text-sm font-bold text-gray-500 mb-3">{lang === 'zh' ? '介面語言' : 'Language'}</label>
+                <button onClick={toggleLanguage} className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-medium transition-all bg-orange-50 text-orange-600 border-2 border-orange-200 hover:bg-orange-100">
+                  <Globe className="w-5 h-5" /> {lang === 'zh' ? 'Switch to English' : '切換為中文'}
+                </button>
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-500 mb-3">{lang === 'zh' ? '分享連結' : 'Share Link'}</label>
+                <button onClick={copyLessonLink} className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl font-medium transition-all ${copySuccess ? 'bg-green-100 text-green-600 border-2 border-green-400' : 'bg-blue-50 text-blue-600 border-2 border-blue-200 hover:bg-blue-100'}`}>
+                  {copySuccess ? <Check className="w-5 h-5" /> : <LinkIcon className="w-5 h-5" />}
+                  {copySuccess ? t.copied : t.copyLink}
+                </button>
+              </div>
+            </div>
+            <div className="p-4 bg-gray-50 border-t border-gray-100 text-center shrink-0">
+              <button onClick={() => {playSound('pop'); setShowSettings(false);}} className="w-full py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-xl font-bold transition-colors">
+                {lang === 'zh' ? '關閉' : 'Close'}
+              </button>
+            </div>
+          </div>
+        </div>
+      );
 
       // 🌟 將視窗改為常數變數，避免 React 在重繪時因為 Component 卸載而導致點擊失效
       const renderTreasureModal = () => (
@@ -971,19 +1064,28 @@
             </p>
             <div className="absolute top-2 right-2 sm:top-4 sm:right-4 md:top-6 md:right-6 flex flex-col gap-2 z-20 items-end">
               
-              <div className="flex gap-2">
-                <button onClick={() => { playSound('pop'); setHasUsedHint(true); setPhoneticMode(prev => prev === 'zhuyin' ? 'none' : 'zhuyin'); setComboCount(0); }} className={`flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all sm:w-24 ${phoneticMode === 'zhuyin' ? 'bg-orange-400 text-white shadow-[0_4px_0_0_#ea580c] border-2 border-orange-500' : 'bg-white text-orange-500 shadow-[0_4px_0_0_#fed7aa] hover:translate-y-[-2px] border-2 border-orange-200'}`}>
-                  <Type className="w-3 h-3 sm:w-4 sm:h-4" /><span>{phoneticMode === 'zhuyin' ? t.hideBtn : t.zhuyinBtn}</span>
-                </button>
-                <button onClick={() => { playSound('pop'); setHasUsedHint(true); setPhoneticMode(prev => prev === 'pinyin' ? 'none' : 'pinyin'); setComboCount(0); }} className={`flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all sm:w-24 ${phoneticMode === 'pinyin' ? 'bg-blue-400 text-white shadow-[0_4px_0_0_#2563eb] border-2 border-blue-500' : 'bg-white text-blue-500 shadow-[0_4px_0_0_#bfdbfe] hover:translate-y-[-2px] border-2 border-blue-200'}`}>
-                  <Type className="w-3 h-3 sm:w-4 sm:h-4" /><span>{phoneticMode === 'pinyin' ? t.hideBtn : t.pinyinBtn}</span>
-                </button>
+              <div className="flex gap-2 items-center">
+                <div className="relative">
+                  <select 
+                    value={selectedVoiceURI} 
+                    onChange={(e) => { playSound('pop'); setSelectedVoiceURI(e.target.value); }} 
+                    className="appearance-none bg-blue-50 text-blue-600 text-xs sm:text-sm font-bold px-3 sm:px-4 py-2 pr-7 sm:pr-9 rounded-full border-2 border-blue-200 shadow-[0_4px_0_0_#bfdbfe] hover:translate-y-[-2px] outline-none cursor-pointer transition-all max-w-[120px] sm:max-w-[200px] text-ellipsis overflow-hidden whitespace-nowrap"
+                  >
+                    <option value="auto">{lang === 'zh' ? '✨ 自動最佳聲音' : '✨ Auto Voice'}</option>
+                    {availableVoices.map(v => (
+                      <option key={v.voiceURI} value={v.voiceURI}>{v.name.replace(/Google |Microsoft /g, '')}</option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 sm:pr-3 text-blue-500">
+                    <Volume2 className="w-3 h-3 sm:w-4 sm:h-4" />
+                  </div>
+                </div>
+                <button onClick={() => { playSound('pop'); setShowSettings(true); }} className="flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all bg-gray-100 text-gray-600 shadow-[0_4px_0_0_#d1d5db] hover:translate-y-[-2px] border-2 border-gray-200"><SettingsIcon className="w-3 h-3 sm:w-4 sm:h-4" /><span className="hidden sm:inline">{lang === 'zh' ? '設定' : 'Settings'}</span></button>
               </div>
 
               <div className="flex gap-2 w-full sm:w-auto justify-end mt-1 sm:mt-0">
                 <button onClick={openTreasureRoom} className="flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all bg-pink-400 text-white shadow-[0_4px_0_0_#be185d] hover:translate-y-[-2px] border-2 border-pink-500"><Gift className="w-3 h-3 sm:w-4 sm:h-4" /><span>{t.treasureRoom}</span></button>
-                <button onClick={() => { playSound('pop'); setShowLeaderboard(true); }} className="flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all bg-yellow-400 text-white shadow-[0_4px_0_0_#ca8a04] hover:translate-y-[-2px] border-2 border-yellow-500"><Trophy className="w-3 h-3 sm:w-4 sm:h-4" /><span>{t.leaderboard}</span></button>
-                <button onClick={copyLessonLink} className={`flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all sm:w-auto sm:px-5 ${copySuccess ? 'bg-green-400 text-white shadow-[0_4px_0_0_#16a34a] border-2 border-green-500' : 'bg-white text-blue-500 shadow-[0_4px_0_0_#bfdbfe] hover:translate-y-[-2px] border-2 border-blue-200'}`} title={t.copyLink}>{copySuccess && <span className="flex items-center gap-1"><Check className="w-3 h-3 sm:w-4 sm:h-4" /> {t.copied}</span>}{!copySuccess && <span className="flex items-center gap-1"><LinkIcon className="w-3 h-3 sm:w-4 sm:h-4" /> {t.copyLink}</span>}</button>
+                <button onClick={() => { playSound('pop'); setShowLeaderboard(true); }} className="flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all bg-yellow-400 text-white shadow-[0_4px_0_0_#ca8a04] hover:translate-y-[-2px] border-2 border-yellow-500"><Trophy className="w-3 h-3 sm:w-4 sm:h-4" /><span className="hidden sm:inline">{t.leaderboard}</span></button>
               </div>
             </div>
           </header>
@@ -1026,6 +1128,12 @@
                   <div className="flex items-center justify-center text-sm sm:text-base text-orange-500 font-medium bg-orange-50 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full border-2 border-orange-100 animate-pulse shadow-sm">
                     {t.clickToHear}
                   </div>
+                  <button onClick={() => { playSound('pop'); setHasUsedHint(true); setPhoneticMode(prev => prev === 'zhuyin' ? 'none' : 'zhuyin'); setComboCount(0); }} className={`flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-sm sm:text-base font-medium transition-all sm:w-24 ${phoneticMode === 'zhuyin' ? 'bg-orange-400 text-white shadow-[0_4px_0_0_#ea580c] border-2 border-orange-500' : 'bg-white text-orange-500 shadow-[0_4px_0_0_#fed7aa] hover:translate-y-[-2px] border-2 border-orange-200'}`}>
+                    <Type className="w-3 h-3 sm:w-4 sm:h-4" /><span>{phoneticMode === 'zhuyin' ? t.hideBtn : t.zhuyinBtn}</span>
+                  </button>
+                  <button onClick={() => { playSound('pop'); setHasUsedHint(true); setPhoneticMode(prev => prev === 'pinyin' ? 'none' : 'pinyin'); setComboCount(0); }} className={`flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-sm sm:text-base font-medium transition-all sm:w-24 ${phoneticMode === 'pinyin' ? 'bg-blue-400 text-white shadow-[0_4px_0_0_#2563eb] border-2 border-blue-500' : 'bg-white text-blue-500 shadow-[0_4px_0_0_#bfdbfe] hover:translate-y-[-2px] border-2 border-blue-200'}`}>
+                    <Type className="w-3 h-3 sm:w-4 sm:h-4" /><span>{phoneticMode === 'pinyin' ? t.hideBtn : t.pinyinBtn}</span>
+                  </button>
                   {!result && (
                     <button onClick={handleTeacherHelp} className="flex items-center justify-center gap-1.5 sm:gap-2 bg-white text-blue-500 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-sm sm:text-base font-medium transition-all shadow-[0_4px_0_0_#bfdbfe] hover:translate-y-[-2px] hover:shadow-[0_6px_0_0_#bfdbfe] active:translate-y-[4px] active:shadow-none border-2 border-blue-200">
                       <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5" /> {t.teacherHelp}
@@ -1106,6 +1214,7 @@
           
           {showLeaderboard && renderLeaderboardModal()}
           {showTreasureRoom && renderTreasureModal()}
+          {showSettings && renderSettingsModal()}
         </div>
       );
     }
