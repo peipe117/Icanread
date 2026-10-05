@@ -100,6 +100,7 @@
     const HelpCircle = (props) => <IconBase className={props.className} fill={props.fill}><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></IconBase>;
     const Maximize = (props) => <IconBase className={props.className} fill={props.fill}><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></IconBase>;
     const Globe = (props) => <IconBase className={props.className} fill={props.fill}><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></IconBase>;
+    const Gift = (props) => <IconBase className={props.className} fill={props.fill}><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></IconBase>;
     const Trophy = (props) => <IconBase className={props.className} fill={props.fill}><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></IconBase>;
     const XIcon = (props) => <IconBase className={props.className} fill={props.fill}><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></IconBase>;
     const ListIcon = (props) => <IconBase className={props.className} fill={props.fill}><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></IconBase>;
@@ -119,40 +120,48 @@
       </div>
     );
 
-    // 🌟 TTS 發音過濾器
+    // 🌟 TTS 發音過濾器：專門處理瀏覽器念錯的破音字
     const getTtsText = (text) => {
       let t = text;
+      // 常見「都」誤讀為 dū
       t = t.replace(/都會/g, '兜會');
       t = t.replace(/都有/g, '兜有');
       t = t.replace(/都帶/g, '兜帶');
       t = t.replace(/都去/g, '兜去');
       t = t.replace(/都餵/g, '兜餵');
       if (t === '都') t = '兜';
+      
+      // 常見「還」誤讀為 huán
       t = t.replace(/還有/g, '孩有');
       t = t.replace(/還會/g, '孩會');
       t = t.replace(/還想/g, '孩想');
       if (t === '還') t = '孩';
+
+      // 台灣常見「和」讀為 hàn
       t = t.replace(/和/g, '汗');
       if (t === '和') t = '汗';
+
+      // 其他常見誤讀
       t = t.replace(/長高/g, '掌高');
       t = t.replace(/睡覺/g, '睡叫');
+
       return t;
     };
 
-    // --- 完整課程資料 (含拼音) ---
+    // --- 完整課程資料 (含拼音與專屬寶物) ---
     const LESSONS = [
-      { id: 'L1', title: '第一課：新同學', titleEn: 'Lesson 1: New Classmates', sentences: [ { text: "今天，我們有兩個新同學，現在請他們介紹自己。", zhuyinStr: "ㄐㄧㄣ ㄊㄧㄢ _ ㄨㄛˇ ㄇㄣ˙ ㄧㄡˇ ㄌㄧㄤˇ ㄍㄜ˙ ㄒㄧㄣ ㄊㄨㄥˊ ㄒㄩㄝˊ _ ㄒㄧㄢˋ ㄗㄞˋ ㄑㄧㄥˇ ㄊㄚ ㄇㄣ˙ ㄐㄧㄝˋ ㄕㄠˋ ㄗˋ ㄐㄧˇ _", pinyinStr: "jīn tiān _ wǒ men yǒu liǎng ge xīn tóng xué _ xiàn zài qǐng tā men jiè shào zì jǐ _" }, { text: "大家好，我叫方友朋，今年八歲，我最喜歡跟爸爸一起游泳。", zhuyinStr: "ㄉㄚˋ ㄐㄧㄚ ㄏㄠˇ _ ㄨㄛˇ ㄐㄧㄠˋ ㄈㄤ ㄧㄡˇ ㄆㄥˊ _ ㄐㄧㄣ ㄋㄧㄢˊ ㄅㄚ ㄙㄨㄟˋ _ ㄨㄛˇ ㄗㄨㄟˋ ㄒㄧˇ ㄏㄨㄢ ㄍㄣ ㄅㄚˋ ㄅㄚ˙ ㄧˋ ㄑㄧˇ ㄧㄡˊ ㄩㄥˇ _", pinyinStr: "dà jiā hǎo _ wǒ jiào fāng yǒu péng _ jīn nián bā suì _ wǒ zuì xǐ huān gēn bà ba yì qǐ yóu yǒng _" }, { text: "大家好，我叫張莉，今年七歲，我比較喜歡看書。", zhuyinStr: "ㄉㄚˋ ㄐㄧㄚ ㄏㄠˇ _ ㄨㄛˇ ㄐㄧㄠˋ ㄓㄤ ㄌㄧˋ _ ㄐㄧㄣ ㄋㄧㄢˊ ㄑㄧ ㄙㄨㄟˋ _ ㄨㄛˇ ㄅㄧˇ ㄐㄧㄠˋ ㄒㄧˇ ㄏㄨㄢ ㄎㄢˋ ㄕㄨ _", pinyinStr: "dà jiā hǎo _ wǒ jiào zhāng lì _ jīn nián qī suì _ wǒ bǐ jiào xǐ huān kàn shū _" }, { text: "你們好，我叫李大文。很高興認識你們。", zhuyinStr: "ㄋㄧˇ ㄇㄣ˙ ㄏㄠˇ _ ㄨㄛˇ ㄐㄧㄠˋ ㄌㄧˇ ㄉㄚˋ ㄨㄣˊ _ ㄏㄣˇ ㄍㄠ ㄒㄧㄥˋ ㄖㄣˋ ㄕ˙ ㄋㄧˇ ㄇㄣ˙ _", pinyinStr: "nǐ men hǎo _ wǒ jiào lǐ dà wén _ hěn gāo xìng rèn shi nǐ men _" }, { text: "歡迎你們來中文學校學華語。", zhuyinStr: "ㄏㄨㄢ ㄧㄥˊ ㄋㄧˇ ㄇㄣ˙ ㄌㄞˊ ㄓㄨㄥ ㄨㄣˊ ㄒㄩㄝˊ ㄒㄧㄠˋ ㄒㄩㄝˊ ㄏㄨㄚˊ ㄩˇ _", pinyinStr: "huān yíng nǐ men lái zhōng wén xué xiào xué huá yǔ _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
-      { id: 'L2', title: '第二課：我爸爸做生意', titleEn: 'Lesson 2: My Dad Does Business', sentences: [ { text: "張莉，照片裡面的人是誰？", zhuyinStr: "ㄓㄤ ㄌㄧˋ _ ㄓㄠˋ ㄆㄧㄢˋ ㄌㄧˇ ㄇㄧㄢˋ ㄉㄜ˙ ㄖㄣˊ ㄕˋ ㄕㄟˊ _", pinyinStr: "zhāng lì _ zhào piàn lǐ miàn de rén shì shéi _" }, { text: "左邊是我外公，他以前是醫生，右邊是我外婆。", zhuyinStr: "ㄗㄨㄛˇ ㄅㄧㄢ ㄕˋ ㄨㄛˇ ㄨㄞˋ ㄍㄨㄥ _ ㄊㄚ ㄧˇ ㄑㄧㄢˊ ㄕˋ ㄧ ㄕㄥ _ ㄧㄡˋ ㄅㄧㄢ ㄕˋ ㄨㄛˇ ㄨㄞˋ ㄆㄛˊ _", pinyinStr: "zuǒ biān shì wǒ wài gōng _ tā yǐ qián shì yī shēng _ yòu biān shì wǒ wài pó _" }, { text: "你爸爸媽媽做什麼工作？", zhuyinStr: "ㄋㄧˇ ㄅㄚˋ ㄅㄚ˙ ㄇㄚ ㄇㄚ˙ ㄗㄨㄛˋ ㄕㄣˊ ㄇㄜ˙ ㄍㄨㄥ ㄗㄨㄛˋ _", pinyinStr: "nǐ bà ba mā ma zuò shén me gōng zuò _" }, { text: "我爸爸做生意，我媽媽幫他。你爸爸媽媽呢？", zhuyinStr: "ㄨㄛˇ ㄅㄚˋ ㄅㄚ˙ ㄗㄨㄛˋ ㄕㄥ ㄧˋ _ ㄨㄛˇ ㄇㄚ ㄇㄚ˙ ㄅㄤ ㄊㄚ _ ㄋㄧˇ ㄅㄚˋ ㄅㄚ˙ ㄇㄚ ㄇㄚ˙ ㄋㄜ˙ _", pinyinStr: "wǒ bà ba zuò shēng yì _ wǒ mā ma bāng tā _ nǐ bà ba mā ma ne _" }, { text: "我爸爸在電腦公司上班，我媽媽在銀行工作。", zhuyinStr: "ㄨㄛˇ ㄅㄚˋ ㄅㄚ˙ ㄗㄞˋ ㄉㄧㄢˋ ㄋㄠˇ ㄍㄨㄥ ㄙ ㄕㄤˋ ㄅㄢ _ ㄨㄛˇ ㄇㄚ ㄇㄚ˙ ㄗㄞˋ ㄧㄣˊ ㄏㄤˊ ㄍㄨㄥ ㄗㄨㄛˋ _", pinyinStr: "wǒ bà ba zài diàn nǎo gōng sī shàng bān _ wǒ mā ma zài yín háng gōng zuò _" }, { text: "你以後想做什麼？", zhuyinStr: "ㄋㄧˇ ㄧˇ ㄏㄡˋ ㄒㄧㄤˇ ㄗㄨㄛˋ ㄕㄣˊ ㄇㄜ˙ _", pinyinStr: "nǐ yǐ hòu xiǎng zuò shén me _" }, { text: "我以後想跟爸爸一樣。", zhuyinStr: "ㄨㄛˇ ㄧˇ ㄏㄡˋ ㄒㄧㄤˇ ㄍㄣ ㄅㄚˋ ㄅㄚ˙ ㄧˊ ㄧㄤˋ _", pinyinStr: "wǒ yǐ hòu xiǎng gēn bà ba yí yàng _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
-      { id: 'L3', title: '第三課：去超級市場', titleEn: 'Lesson 3: Going to the Supermarket', sentences: [ { text: "媽媽，你要去哪裡？", zhuyinStr: "ㄇㄚ ㄇㄚ˙ _ ㄋㄧˇ ㄧㄠˋ ㄑㄩˋ ㄋㄚˇ ㄌㄧˇ _", pinyinStr: "mā ma _ nǐ yào qù nǎ lǐ _" }, { text: "我要去附近的超級市場買東西，你要跟我一起去嗎？", zhuyinStr: "ㄨㄛˇ ㄧㄠˋ ㄑㄩˋ ㄈㄨˋ ㄐㄧㄣˋ ㄉㄜ˙ ㄔㄠ ㄐㄧˊ ㄕˋ ㄔㄤˇ ㄇㄞˇ ㄉㄨㄥ ㄒㄧ _ ㄋㄧˇ ㄧㄠˋ ㄍㄣ ㄨㄛˇ ㄧˋ ㄑㄧˇ ㄑㄩˋ ㄇㄚ˙ _", pinyinStr: "wǒ yào qù fù jìn de chāo jí shì chǎng mǎi dōng xi _ nǐ yào gēn wǒ yì qǐ qù ma _" }, { text: "要，我想去買巧克力冰淇淋。", zhuyinStr: "ㄧㄠˋ _ ㄨㄛˇ ㄒㄧㄤˇ ㄑㄩˋ ㄇㄞˇ ㄑㄧㄠˇ ㄎㄜˋ ㄌㄧˋ ㄅㄧㄥ ㄑㄧˊ ㄌㄧㄣˊ _", pinyinStr: "yào _ wǒ xiǎng qù mǎi qiǎo kè lì bīng qí lín _" }, { text: "你今天要買什麼？", zhuyinStr: "ㄋㄧˇ ㄐㄧㄣ ㄊㄧㄢ ㄧㄠˋ ㄇㄞˇ ㄕㄣˊ ㄇㄜ˙ _", pinyinStr: "nǐ jīn tiān yào mǎi shén me _" }, { text: "我今天要買魚、牛肉、青菜，還要買米。", zhuyinStr: "ㄨㄛˇ ㄐㄧㄣ ㄊㄧㄢ ㄧㄠˋ ㄇㄞˇ ㄩˊ _ ㄋㄧㄡˊ ㄖㄡˋ _ ㄑㄧㄥ ㄘㄞˋ _ ㄏㄞˊ ㄧㄠˋ ㄇㄞˇ ㄇㄧˇ _", pinyinStr: "wǒ jīn tiān yào mǎi yú _ niú ròu _ qīng cài _ hái yào mǎi mǐ _" }, { text: "我也可以買糖果嗎？", zhuyinStr: "ㄨㄛˇ ㄧㄝˇ ㄎㄜˇ ㄧˇ ㄇㄞˇ ㄊㄤˊ ㄍㄨㄛˇ ㄇㄚ˙ _", pinyinStr: "wǒ yě kě yǐ mǎi táng guǒ ma _" }, { text: "我們去看一下吧！", zhuyinStr: "ㄨㄛˇ ㄇㄣ˙ ㄑㄩˋ ㄎㄢˋ ㄧˊ ㄒㄧㄚˋ ㄅㄚ˙ _", pinyinStr: "wǒ men qù kàn yí xià ba _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
-      { id: 'L4', title: '第四課：我想吃漢堡', titleEn: 'Lesson 4: I Want a Hamburger', sentences: [ { text: "我想吃漢堡跟薯條，我們可不可以出去吃？", zhuyinStr: "ㄨㄛˇ ㄒㄧㄤˇ ㄔ ㄏㄢˋ ㄅㄠˇ ㄍㄣ ㄕㄨˇ ㄊㄧㄠˊ _ ㄨㄛˇ ㄇㄣ˙ ㄎㄜˇ ㄅㄨˋ ㄎㄜˇ ㄧˇ ㄔㄨ ㄑㄩˋ ㄔ _", pinyinStr: "wǒ xiǎng chī hàn bǎo gēn shǔ tiáo _ wǒ men kě bù kě yǐ chū qù chī _" }, { text: "今天先在家吃，週末再出去吃吧！", zhuyinStr: "ㄐㄧㄣ ㄊㄧㄢ ㄒㄧㄢ ㄗㄞˋ ㄐㄧㄚ ㄔ _ ㄓㄡ ㄇㄛˋ ㄗㄞˋ ㄔㄨ ㄑㄩˋ ㄔ ㄅㄚ˙ _", pinyinStr: "jīn tiān xiān zài jiā chī _ zhōu mò zài chū qù chī ba _" }, { text: "今天晚餐想吃什麼？", zhuyinStr: "ㄐㄧㄣ ㄊㄧㄢ ㄨㄢˇ ㄘㄢ ㄒㄧㄤˇ ㄔ ㄕㄣˊ ㄇㄜ˙ _", pinyinStr: "jīn tiān wǎn cān xiǎng chī shén me _" }, { text: "我想吃麵。文文，你呢？", zhuyinStr: "ㄨㄛˇ ㄒㄧㄤˇ ㄔ ㄇㄧㄢˋ _ ㄨㄣˊ ㄨㄣˊ _ ㄋㄧˇ ㄋㄜ˙ _", pinyinStr: "wǒ xiǎng chī miàn _ wén wen _ nǐ ne _" }, { text: "我想吃蛋炒飯，有湯嗎？", zhuyinStr: "ㄨㄛˇ ㄒㄧㄤˇ ㄔ ㄉㄢˋ ㄔㄠˇ ㄈㄢˋ _ ㄧㄡˇ ㄊㄤ ㄇㄚ˙ _", pinyinStr: "wǒ xiǎng chī dàn chǎo fàn _ yǒu tāng ma _" }, { text: "我已經做了玉米湯。", zhuyinStr: "ㄨㄛˇ ㄧˇ ㄐㄧㄥ ㄗㄨㄛˋ ㄌㄜ˙ ㄩˋ ㄇㄧˇ ㄊㄤ _", pinyinStr: "wǒ yǐ jīng zuò le yù mǐ tāng _" }, { text: "媽，我現在很餓，想快點吃晚飯，好嗎？", zhuyinStr: "ㄇㄚ _ ㄨㄛˇ ㄒㄧㄢˋ ㄗㄞˋ ㄏㄣˇ ㄜˋ _ ㄒㄧㄤˇ ㄎㄨㄞˋ ㄉㄧㄢˇ ㄔ ㄨㄢˇ ㄈㄢˋ _ ㄏㄠˇ ㄇㄚ˙ _", pinyinStr: "mā _ wǒ xiàn zài hěn è _ xiǎng kuài diǎn chī wǎn fàn _ hǎo ma _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
-      { id: 'L5', title: '第五課：春天快到了', titleEn: 'Lesson 5: Spring is Coming', sentences: [ { text: "你看！樹葉變黃了，秋天快到了。", zhuyinStr: "ㄋㄧˇ ㄎㄢˋ _ ㄕㄨˋ ㄧㄝˋ ㄅㄧㄢˋ ㄏㄨㄤˊ ㄌㄜ˙ _ ㄑㄧㄡ ㄊㄧㄢ ㄎㄨㄞˋ ㄉㄠˋ ㄌㄜ˙ _", pinyinStr: "nǐ kàn _ shù yè biàn huáng le _ qiū tiān kuài dào le _" }, { text: "可是草還是綠色的。", zhuyinStr: "ㄎㄜˇ ㄕˋ ㄘㄠˇ ㄏㄞˊ ㄕˋ ㄌㄩˋ ㄙㄜˋ ㄉㄜ˙ _", pinyinStr: "kě shì cǎo hái shì lǜ sè de _" }, { text: "秋天天氣很好，我覺得很舒服。", zhuyinStr: "ㄑㄧㄡ ㄊㄧㄢ ㄊㄧㄢ ㄑㄧˋ ㄏㄣˇ ㄏㄠˇ _ ㄨㄛˇ ㄐㄩㄝˊ ㄉㄜ˙ ㄏㄣˇ ㄕㄨ ㄈㄨˊ _", pinyinStr: "qiū tiān tiān qì hěn hǎo _ wǒ jué de hěn shū fu _" }, { text: "春天也不錯。", zhuyinStr: "ㄔㄨㄣ ㄊㄧㄢ ㄧㄝˇ ㄅㄨˊ ㄘㄨㄛˋ _", pinyinStr: "chūn tiān yě bú cuò _" }, { text: "春天的時候，我們家院子有很多顏色的花。", zhuyinStr: "ㄔㄨㄣ ㄊㄧㄢ ㄉㄜ˙ ㄕˊ ㄏㄡˋ _ ㄨㄛˇ ㄇㄣ˙ ㄐㄧㄚ ㄩㄢˋ ㄗ˙ ㄧㄡˇ ㄏㄣˇ ㄉㄨㄛ ㄧㄢˊ ㄙㄜˋ ㄉㄜ˙ ㄏㄨㄚ _", pinyinStr: "chūn tiān de shí hòu _ wǒ men jiā yuàn zi yǒu hěn duō yán sè de huā _" }, { text: "紅色的、白色的都有。", zhuyinStr: "ㄏㄨㄥˊ ㄙㄜˋ ㄉㄜ˙ _ ㄅㄞˊ ㄙㄜˋ ㄉㄜ˙ ㄉㄡ ㄧㄡˇ _", pinyinStr: "hóng sè de _ bái sè de dōu yǒu _" }, { text: "我覺得紅色的花最漂亮。", zhuyinStr: "ㄨㄛˇ ㄐㄩㄝˊ ㄉㄜ˙ ㄏㄨㄥˊ ㄙㄜˋ ㄉㄜ˙ ㄏㄨㄚ ㄗㄨㄟˋ ㄆㄧㄠˋ ㄌㄧㄤˋ _", pinyinStr: "wǒ jué de hóng sè de huā zuì piào liàng _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
-      { id: 'L6', title: '第六課：農曆新年', titleEn: 'Lesson 6: Lunar New Year', sentences: [ { text: "老師說農曆新年快到了。", zhuyinStr: "ㄌㄠˇ ㄕ ㄕㄨㄛ ㄋㄨㄥˊ ㄌㄧˋ ㄒㄧㄣ ㄋㄧㄢˊ ㄎㄨㄞˋ ㄉㄠˋ ㄌㄜ˙ _", pinyinStr: "lǎo shī shuō nóng lì xīn nián kuài dào le _" }, { text: "對，下個星期五是農曆新年。", zhuyinStr: "ㄉㄨㄟˋ _ ㄒㄧㄚˋ ㄍㄜ˙ ㄒㄧㄥ ㄑㄧ ㄨˇ ㄕˋ ㄋㄨㄥˊ ㄌㄧˋ ㄒㄧㄣ ㄋㄧㄢˊ _", pinyinStr: "duì _ xià ge xīng qī wǔ shì nóng lì xīn nián _" }, { text: "媽媽會去華人超市買年糕嗎？", zhuyinStr: "ㄇㄚ ㄇㄚ˙ ㄏㄨㄟˋ ㄑㄩˋ ㄏㄨㄚˊ ㄖㄣˊ ㄔㄠ ㄕˋ ㄇㄞˇ ㄋㄧㄢˊ ㄍㄠ ㄇㄚ˙ _", pinyinStr: "mā ma huì qù huá rén chāo shì mǎi nián gāo ma _" }, { text: "會，那天我們還要給爺爺奶奶拜年。", zhuyinStr: "ㄏㄨㄟˋ _ ㄋㄚˋ ㄊㄧㄢ ㄨㄛˇ ㄇㄣ˙ ㄏㄞˊ ㄧㄠˋ ㄍㄟˇ ㄧㄝˊ ㄧㄝ˙ ㄋㄞˇ ㄋㄞ˙ ㄅㄞˋ ㄋㄧㄢˊ _", pinyinStr: "huì _ nà tiān wǒ men hái yào gěi yé ye nǎi nai bài nián _" }, { text: "太好了，爺爺每年都會給我紅包。", zhuyinStr: "ㄊㄞˋ ㄏㄠˇ ㄌㄜ˙ _ ㄧㄝˊ ㄧㄝ˙ ㄇㄟˇ ㄋㄧㄢˊ ㄉㄡ ㄏㄨㄟˋ ㄍㄟˇ ㄨㄛˇ ㄏㄨㄥˊ ㄅㄠ _", pinyinStr: "tài hǎo le _ yé ye měi nián dōu huì gěi wǒ hóng bāo _" }, { text: "如果在臺灣，我們還會貼春聯、放鞭炮。", zhuyinStr: "ㄖㄨˊ ㄍㄨㄛˇ ㄗㄞˋ ㄊㄞˊ ㄨㄢ _ ㄨㄛˇ ㄇㄣ˙ ㄏㄞˊ ㄏㄨㄟˋ ㄊㄧㄝ ㄔㄨㄣ ㄌㄧㄢˊ _ ㄈㄤˋ ㄅㄧㄢ ㄆㄠˋ _", pinyinStr: "rú guǒ zài tái wān _ wǒ men hái huì tiē chūn lián _ fàng biān pào _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
-      { id: 'L7', title: '第七課：早一點睡覺', titleEn: 'Lesson 7: Go to Sleep Earlier', sentences: [ { text: "大文，該起床了！來不及了！", zhuyinStr: "ㄉㄚˋ ㄨㄣˊ _ ㄍㄞ ㄑㄧˇ ㄔㄨㄤˊ ㄌㄜ˙ _ ㄌㄞˊ ㄅㄨˋ ㄐㄧˊ ㄌㄜ˙ _", pinyinStr: "dà wén _ gāi qǐ chuáng le _ lái bù jí le _" }, { text: "我很累，還想睡覺。", zhuyinStr: "ㄨㄛˇ ㄏㄣˇ ㄌㄟˋ _ ㄏㄞˊ ㄒㄧㄤˇ ㄕㄨㄟˋ ㄐㄧㄠˋ _", pinyinStr: "wǒ hěn lèi _ hái xiǎng shuì jiào _" }, { text: "今天晚上早一點睡，現在趕快去刷牙、洗澡。", zhuyinStr: "ㄐㄧㄣ ㄊㄧㄢ ㄨㄢˇ ㄕㄤˋ ㄗㄠˇ ㄧˋ ㄉㄧㄢˇ ㄕㄨㄟˋ _ ㄒㄧㄢˋ ㄗㄞˋ ㄍㄢˇ ㄎㄨㄞˋ ㄑㄩˋ ㄕㄨㄚ ㄧㄚˊ _ ㄒㄧˇ ㄗㄠˇ _", pinyinStr: "jīn tiān wǎn shàng zǎo yì diǎn shuì _ xiàn zài gǎn kuài qù shuā yá _ xǐ zǎo _" }, { text: "我昨天晚上洗過澡了。", zhuyinStr: "ㄨㄛˇ ㄗㄨㄛˊ ㄊㄧㄢ ㄨㄢˇ ㄕㄤˋ ㄒㄧˇ ㄍㄨㄛˋ ㄗㄠˇ ㄌㄜ˙ _", pinyinStr: "wǒ zuó tiān wǎn shàng xǐ guò zǎo le _" }, { text: "還有，別忘了用肥皂洗臉。", zhuyinStr: "ㄏㄞˊ ㄧㄡˇ _ ㄅㄧㄝˊ ㄨㄤˋ ㄌㄜ˙ ㄩㄥˋ ㄈㄟˊ ㄗㄠˋ ㄒㄧˇ ㄌㄧㄢˇ _", pinyinStr: "hái yǒu _ bié wàng le yòng féi zào xǐ liǎn _" }, { text: "我知道了，要洗乾淨。", zhuyinStr: "ㄨㄛˇ ㄓ ㄉㄠˋ ㄌㄜ˙ _ ㄧㄠˋ ㄒㄧˇ ㄍㄢ ㄐㄧㄥˋ _", pinyinStr: "wǒ zhī dào le _ yào xǐ gān jìng _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
-      { id: 'L8', title: '第八課：我的寵物', titleEn: 'Lesson 8: My Pet', sentences: [ { text: "昨天我爸爸的朋友送給我一隻狗，你們家有寵物嗎？", zhuyinStr: "ㄗㄨㄛˊ ㄊㄧㄢ ㄨㄛˇ ㄅㄚˋ ㄅㄚ˙ ㄉㄜ˙ ㄆㄥˊ ㄧㄡˇ ㄙㄨㄥˋ ㄍㄟˇ ㄨㄛˇ ㄧˋ ㄓ ㄍㄡˇ _ ㄋㄧˇ ㄇㄣ˙ ㄐㄧㄚ ㄧㄡˇ ㄔㄨㄥˇ ㄨˋ ㄇㄚ˙ _", pinyinStr: "zuó tiān wǒ bà ba de péng yǒu sòng gěi wǒ yì zhī gǒu _ nǐ men jiā yǒu chǒng wù ma _" }, { text: "有，我家有兩隻狗，我每天都帶牠們去散步。", zhuyinStr: "ㄧㄡˇ _ ㄨㄛˇ ㄐㄧㄚ ㄧㄡˇ ㄌㄧㄤˇ ㄓ ㄍㄡˇ _ ㄨㄛˇ ㄇㄟˇ ㄊㄧㄢ ㄉㄡ ㄉㄞˋ ㄊㄚ ㄇㄣ˙ ㄑㄩˋ ㄙㄢˋ ㄅㄨˋ _", pinyinStr: "yǒu _ wǒ jiā yǒu liǎng zhī gǒu _ wǒ měi tiān dōu dài tā men qù sàn bù _" }, { text: "張莉，你養過狗嗎？", zhuyinStr: "ㄓㄤ ㄌㄧˋ _ ㄋㄧˇ ㄧㄤˇ ㄍㄨㄛˋ ㄍㄡˇ ㄇㄚ˙ _", pinyinStr: "zhāng lì _ nǐ yǎng guò gǒu ma _" }, { text: "我沒養過狗，我去年養了一隻貓，可是上個月不見了。", zhuyinStr: "ㄨㄛˇ ㄇㄟˊ ㄧㄤˇ ㄍㄨㄛˋ ㄍㄡˇ _ ㄨㄛˇ ㄑㄩˋ ㄋㄧㄢˊ ㄧㄤˇ ㄌㄜ˙ ㄧˋ ㄓ ㄇㄠ _ ㄎㄜˇ ㄕˋ ㄕㄤˋ ㄍㄜ˙ ㄩㄝˋ ㄅㄨˊ ㄐㄧㄢˋ ㄌㄜ˙ _", pinyinStr: "wǒ méi yǎng guò gǒu _ wǒ qù nián yǎng le yì zhī māo _ kě shì shàng ge yuè bú jiàn le _" }, { text: "我也養過貓，非常可愛，我每天都餵牠。", zhuyinStr: "ㄨㄛˇ ㄧㄝˇ ㄧㄤˇ ㄍㄨㄛˋ ㄇㄠ _ ㄈㄟ ㄔㄤˊ ㄎㄜˇ ㄞˋ _ ㄨㄛˇ ㄇㄟˇ ㄊㄧㄢ ㄉㄡ ㄨㄟˋ ㄊㄚ _", pinyinStr: "wǒ yě yǎng guò māo _ fēi cháng kě ài _ wǒ měi tiān dōu wèi tā _" }, { text: "以後我想養一隻兔子。", zhuyinStr: "ㄧˇ ㄏㄡˋ ㄨㄛˇ ㄒㄧㄤˇ ㄧㄤˇ ㄧˋ ㄓ ㄊㄨˋ ㄗ˙ _", pinyinStr: "yǐ hòu wǒ xiǎng yǎng yì zhī tù zi _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
-      { id: 'L9', title: '第九課：音樂教室在北方', titleEn: 'Lesson 9: Music Room is in the North', sentences: [ { text: "東明，這是什麼？", zhuyinStr: "ㄉㄨㄥ ㄇㄧㄥˊ _ ㄓㄜˋ ㄕˋ ㄕㄣˊ ㄇㄜ˙ _", pinyinStr: "dōng míng _ zhè shì shén me _" }, { text: "指南針，也叫指北針，它告訴我們南方和北方在哪裡。", zhuyinStr: "ㄓˇ ㄋㄢˊ ㄓㄣ _ ㄧㄝˇ ㄐㄧㄠˋ ㄓˇ ㄅㄟˇ ㄓㄣ _ ㄊㄚ ㄍㄠˋ ㄙㄨˋ ㄨㄛˇ ㄇㄣ˙ ㄋㄢˊ ㄈㄤ ㄏㄢˋ ㄅㄟˇ ㄈㄤ ㄗㄞˋ ㄋㄚˇ ㄌㄧˇ _", pinyinStr: "zhǐ nán zhēn _ yě jiào zhǐ běi zhēn _ tā gào sù wǒ men nán fāng hàn běi fāng zài nǎ lǐ _" }, { text: "音樂教室是什麼方向？", zhuyinStr: "ㄧㄣ ㄩㄝˋ ㄐㄧㄠˋ ㄕˋ ㄕˋ ㄕㄣˊ ㄇㄜ˙ ㄈㄤ ㄒㄧㄤˋ _", pinyinStr: "yīn yuè jiào shì shì shén me fāng xiàng _" }, { text: "音樂教室在北方，校門口在南方。", zhuyinStr: "ㄧㄣ ㄩㄝˋ ㄐㄧㄠˋ ㄕˋ ㄗㄞˋ ㄅㄟˇ ㄈㄤ _ ㄒㄧㄠˋ ㄇㄣˊ ㄎㄡˇ ㄗㄞˋ ㄋㄢˊ ㄈㄤ _", pinyinStr: "yīn yuè jiào shì zài běi fāng _ xiào mén kǒu zài nán fāng _" }, { text: "足球場在東方，還是西方？", zhuyinStr: "ㄗㄨˊ ㄑㄧㄡˊ ㄔㄤˇ ㄗㄞˋ ㄉㄨㄥ ㄈㄤ _ ㄏㄞˊ ㄕˋ ㄒㄧ ㄈㄤ _", pinyinStr: "zú qiú chǎng zài dōng fāng _ hái shì xī fāng _" }, { text: "因為音樂教室在北方，所以足球場在東方。", zhuyinStr: "ㄧㄣ ㄨㄟˋ ㄧㄣ ㄩㄝˋ ㄐㄧㄠˋ ㄕˋ ㄗㄞˋ ㄅㄟˇ ㄈㄤ _ ㄙㄨㄛˇ ㄧˇ ㄗㄨˊ ㄑㄧㄡˊ ㄔㄤˇ ㄗㄞˋ ㄉㄨㄥ ㄈㄤ _", pinyinStr: "yīn wèi yīn yuè jiào shì zài běi fāng _ suǒ yǐ zú qiú chǎng zài dōng fāng _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
-      { id: 'L10', title: '第十課：外公外婆住在臺灣', titleEn: 'Lesson 10: Grandparents Live in Taiwan', sentences: [ { text: "暑假的時候，我會去臺灣看外公、外婆。", zhuyinStr: "ㄕㄨˇ ㄐㄧㄚˋ ㄉㄜ˙ ㄕˊ ㄏㄡˋ _ ㄨㄛˇ ㄏㄨㄟˋ ㄑㄩˋ ㄊㄞˊ ㄨㄢ ㄎㄢˋ ㄨㄞˋ ㄍㄨㄥ _ ㄨㄞˋ ㄆㄛˊ _", pinyinStr: "shǔ jià de shí hòu _ wǒ huì qù tái wān kàn wài gōng _ wài pó _" }, { text: "你外公、外婆家在哪裡？", zhuyinStr: "ㄋㄧˇ ㄨㄞˋ ㄍㄨㄥ _ ㄨㄞˋ ㄆㄛˊ ㄐㄧㄚ ㄗㄞˋ ㄋㄚˇ ㄌㄧˇ _", pinyinStr: "nǐ wài gōng _ wài pó jiā zài nǎ lǐ _" }, { text: "他們本來住在臺北，退休以後，跟我的舅舅住在臺南。", zhuyinStr: "ㄊㄚ ㄇㄣ˙ ㄅㄣˇ ㄌㄞˊ ㄓㄨˋ ㄗㄞˋ ㄊㄞˊ ㄅㄟˇ _ ㄊㄨㄟˋ ㄒㄧㄡ ㄧˇ ㄏㄡˋ _ ㄍㄣ ㄨㄛˇ ㄉㄜ˙ ㄐㄧㄡˋ ㄐㄧㄡ˙ ㄓㄨˋ ㄗㄞˋ ㄊㄞˊ ㄋㄢˊ _", pinyinStr: "tā men běn lái zhù zài tái běi _ tuī xiū yǐ hòu _ gēn wǒ de jiù jiu zhù zài tái nán _" }, { text: "你們每年都去看外公、外婆嗎？", zhuyinStr: "ㄋㄧˇ ㄇㄣ˙ ㄇㄟˇ ㄋㄧㄢˊ ㄉㄡ ㄑㄩˋ ㄎㄢˋ ㄨㄞˋ ㄍㄨㄥ _ ㄨㄞˋ ㄆㄛˊ ㄇㄚ˙ _", pinyinStr: "nǐ men měi nián dōu qù kàn wài gōng _ wài pó ma _" }, { text: "我們每年都去看他們一次，你外公、外婆住在哪裡？", zhuyinStr: "ㄨㄛˇ ㄇㄣ˙ ㄇㄟˇ ㄋㄧㄢˊ ㄉㄡ ㄑㄩˋ ㄎㄢˋ ㄊㄚ ㄇㄣ˙ ㄧˊ ㄘˋ _ ㄋㄧˇ ㄨㄞˋ ㄍㄨㄥ _ ㄨㄞˋ ㄆㄛˊ ㄓㄨˋ ㄗㄞˋ ㄋㄚˇ ㄌㄧˇ _", pinyinStr: "wǒ men měi nián dōu qù kàn tā men yí cì _ nǐ wài gōng _ wài pó zhù zài nǎ lǐ _" }, { text: "我外公、外婆現在住在紐約，他們下個月會來看我們。", zhuyinStr: "ㄨㄛˇ ㄨㄞˋ ㄍㄨㄥ _ ㄨㄞˋ ㄆㄛˊ ㄒㄧㄢˋ ㄗㄞˋ ㄓㄨˋ ㄗㄞˋ ㄋㄧㄡˇ ㄩㄝ _ ㄊㄚ ㄇㄣ˙ ㄒㄧㄚˋ ㄍㄜ˙ ㄩㄝˋ ㄏㄨㄟˋ ㄌㄞˋ ㄎㄢˋ ㄨㄛˇ ㄇㄣ˙ _", pinyinStr: "wǒ wài gōng _ wài pó xiàn zài zhù zài niǔ yuē _ tā men xià ge yuè huì lái kàn wǒ men _" }, { text: "我外公、外婆喜歡旅行，常常來看我們，也常去法國看阿姨。", zhuyinStr: "ㄨㄛˇ ㄨㄞˋ ㄍㄨㄥ _ ㄨㄞˋ ㄆㄛˊ ㄒㄧˇ ㄏㄨㄢ ㄌㄩˇ ㄒㄧㄥˊ _ ㄔㄤˊ ㄔㄤˊ ㄌㄞˋ ㄎㄢˋ ㄨㄛˇ ㄇㄣ˙ _ ㄧㄝˇ ㄔㄤˊ ㄑㄩˋ ㄈㄚˇ ㄍㄨㄛˊ ㄎㄢˋ ㄚ ㄧˊ _", pinyinStr: "wǒ wài gōng _ wài pó xǐ huān lǚ xíng _ cháng cháng lái kàn wǒ men _ yě cháng qù fǎ guó kàn ā yí _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
-      { id: 'L11', title: '第十一課：去動物園', titleEn: 'Lesson 11: Going to the Zoo', sentences: [ { text: "下個星期五，學校要帶我們去動物園玩。", zhuyinStr: "ㄒㄧㄚˋ ㄍㄜ˙ ㄒㄧㄥ ㄑㄧ ㄨˇ _ ㄒㄩㄝˊ ㄒㄧㄠˋ ㄧㄠˋ ㄉㄞˋ ㄨㄛˇ ㄇㄣ˙ ㄑㄩˋ ㄉㄨㄥˋ ㄨˋ ㄩㄢˊ ㄨㄢˊ _", pinyinStr: "xià ge xīng qī wǔ _ xué xiào yào dài wǒ men qù dòng wù yuán wán _" }, { text: "太好了！你可以看到你喜歡的大象和老虎。", zhuyinStr: "ㄊㄞˋ ㄏㄠˇ ㄌㄜ˙ _ ㄋㄧˇ ㄎㄜˇ ㄧˇ ㄎㄢˋ ㄉㄠˋ ㄋㄧˇ ㄒㄧˇ ㄏㄨㄢ ㄉㄜ˙ ㄉㄚˋ ㄒㄧㄤˋ ㄏㄢˋ ㄌㄠˇ ㄏㄨˇ _", pinyinStr: "tài hǎo le _ nǐ kě yǐ kàn dào nǐ xǐ huān de dà xiàng hàn lǎo hǔ _" }, { text: "這一次我希望可以看到熊貓和猴子。", zhuyinStr: "ㄓㄜˋ ㄧˊ ㄘˋ ㄨㄛˇ ㄒㄧ ㄨㄤˋ ㄎㄜˇ ㄧˇ ㄎㄢˋ ㄉㄠˋ ㄒㄩㄥˊ ㄇㄠ ㄏㄢˋ ㄏㄡˊ ㄗ˙ _", pinyinStr: "zhè yí cì wǒ xī wàng kě yǐ kàn dào xióng māo hàn hóu zi _" }, { text: "對，以前我去的時候，動物園沒有熊貓。", zhuyinStr: "ㄉㄨㄟˋ _ ㄧˇ ㄑㄧㄢˊ ㄨㄛˇ ㄑㄩˋ ㄉㄜ˙ ㄕˊ ㄏㄡˋ _ ㄉㄨㄥˋ ㄨˋ ㄩㄢˊ ㄇㄟˊ ㄧㄡˇ ㄒㄩㄥˊ ㄇㄠ _", pinyinStr: "duì _ yǐ qián wǒ qù de shí hòu _ dòng wù yuán méi yǒu xióng māo _" }, { text: "現在不但有熊貓，還有企鵝。", zhuyinStr: "ㄒㄧㄢˋ ㄗㄞˋ ㄅㄨˊ ㄉㄢˋ ㄧㄡˇ ㄒㄩㄥˊ ㄇㄠ _ ㄏㄞˊ ㄧㄡˇ ㄑㄧˋ ㄜˊ _", pinyinStr: "xiàn zài bú dàn yǒu xióng māo _ hái yǒu qì é _" }, { text: "我覺得熊貓胖胖的，真可愛！", zhuyinStr: "ㄨㄛˇ ㄐㄩㄝˊ ㄉㄜ˙ ㄒㄩㄥˊ ㄇㄠ ㄆㄤˋ ㄆㄤˋ ㄉㄜ˙ _ ㄓㄣ ㄎㄜˇ ㄞˋ _", pinyinStr: "wǒ jué de xióng māo pàng pàng de _ zhēn kě ài _" }, { text: "我喜歡長頸鹿，脖子長長的。", zhuyinStr: "ㄨㄛˇ ㄒㄧˇ ㄏㄨㄢ ㄔㄤˊ ㄐㄧㄥˇ ㄌㄨˋ _ ㄅㄛˊ ㄗ˙ ㄔㄤˊ ㄔㄤˊ ㄉㄜ˙ _", pinyinStr: "wǒ xǐ huān cháng jǐng lù _ bó zi cháng cháng de _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
-      { id: 'L12', title: '第十二課：打網路電話', titleEn: 'Lesson 12: Making an Internet Call', sentences: [ { text: "大文，我現在要用網路給姑姑打電話。", zhuyinStr: "ㄉㄚˋ ㄨㄣˊ _ ㄨㄛˇ ㄒㄧㄢˋ ㄗㄞˋ ㄧㄠˋ ㄩㄥˋ ㄨㄤˇ ㄌㄨˋ ㄍㄟˇ ㄍㄨ ㄍㄨ ㄉㄚˇ ㄉㄧㄢˋ ㄏㄨㄚˋ _", pinyinStr: "dà wén _ wǒ xiàn zài yào yòng wǎng lù gěi gū gu dǎ diàn huà _" }, { text: "可以看到姑姑嗎？我很久沒跟姑姑說話了。", zhuyinStr: "ㄎㄜˇ ㄧˇ ㄎㄢˋ ㄉㄠˋ ㄍㄨ ㄍㄨ ㄇㄚ˙ _ ㄨㄛˇ ㄏㄣˇ ㄐㄧㄡˇ ㄇㄟˊ ㄍㄣ ㄍㄨ ㄍㄨ ㄕㄨㄛ ㄏㄨㄚˋ ㄌㄜ˙ _", pinyinStr: "kě yǐ kàn dào gū gu ma _ wǒ hěn jiǔ méi gēn gū gu shuō huà le _" }, { text: "可以看到她的影像，快一點過來。", zhuyinStr: "ㄎㄜˇ ㄧˇ ㄎㄢˋ ㄉㄠˋ ㄊㄚ ㄉㄜ˙ ㄧㄥˇ ㄒㄧㄤˋ _ ㄎㄨㄞˋ ㄧˋ ㄉㄧㄢˋ ㄍㄨㄛˋ ㄌㄞˊ _", pinyinStr: "kě yǐ kàn dào tā de yǐng xiàng _ kuài yì diǎn guò lái _" }, { text: "大文，你看起來瘦了。", zhuyinStr: "ㄉㄚˋ ㄨㄣˊ _ ㄋㄧˇ ㄎㄢˋ ㄑㄧˇ ㄌㄞˊ ㄕㄡˋ ㄌㄜ˙ _", pinyinStr: "dà wén _ nǐ kàn qǐ lái shòu le _" }, { text: "我沒瘦，我長高了。", zhuyinStr: "ㄨㄛˇ ㄇㄟˊ ㄕㄡˋ _ ㄨㄛˇ ㄓㄤˇ ㄍㄠ ㄌㄜ˙ _", pinyinStr: "wǒ méi shòu _ wǒ zhǎng gāo le _" }, { text: "文文現在也跟你一起去學華語嗎？", zhuyinStr: "ㄨㄣˊ ㄨㄣˊ ㄒㄧㄢˋ ㄗㄞˋ ㄧㄝˇ ㄍㄣ ㄋㄧˇ ㄧˋ ㄑㄧˇ ㄑㄩˋ ㄒㄩㄝˊ ㄏㄨㄚˊ ㄩˇ ㄇㄚ˙ _", pinyinStr: "wén wen xiàn zài yě gēn nǐ yì qǐ qù xué huá yǔ ma _" }, { text: "是啊！上華語課很有意思。", zhuyinStr: "ㄕˋ ㄚ _ ㄕㄤˋ ㄏㄨㄚˊ ㄩˇ ㄎㄜˋ ㄏㄣˇ ㄧㄡˇ ㄧˋ ㄙ˙ _", pinyinStr: "shì a _ shàng huá yǔ kè hěn yǒu yì si _" }, { text: "你好好學華語，以後可以用網路給我寫信。", zhuyinStr: "ㄋㄧˇ ㄏㄠˇ ㄏㄠˇ ㄒㄩㄝˊ ㄏㄨㄚˊ ㄩˇ _ ㄧˇ ㄏㄡˋ ㄎㄜˇ ㄧˇ ㄩㄥˋ ㄨㄤˇ ㄌㄨˋ ㄍㄟˇ ㄨㄛˇ ㄒㄧㄝˇ ㄒㄧㄣˋ _", pinyinStr: "nǐ hǎo hǎo xué huá yǔ _ yǐ hòu kě yǐ yòng wǎng lù gěi wǒ xiě xìn _" }, { text: "沒問題，我一定會好好學華語。", zhuyinStr: "ㄇㄟˊ ㄨㄣˋ ㄊㄧˊ _ ㄨㄛˇ ㄧˊ ㄉㄧㄥˋ ㄏㄨㄟˋ ㄏㄠˇ ㄏㄠˇ ㄒㄩㄝˊ ㄏㄨㄚˊ ㄩˇ _", pinyinStr: "méi wèn tí _ wǒ yí dìng huì hǎo hǎo xué huá yǔ _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) }
+      { id: 'L1', treasure: '📚', treasureName: '華語課本', treasureNameEn: 'Textbook', title: '第一課：新同學', titleEn: 'Lesson 1: New Classmates', sentences: [ { text: "今天，我們有兩個新同學，現在請他們介紹自己。", zhuyinStr: "ㄐㄧㄣ ㄊㄧㄢ _ ㄨㄛˇ ㄇㄣ˙ ㄧㄡˇ ㄌㄧㄤˇ ㄍㄜ˙ ㄒㄧㄣ ㄊㄨㄥˊ ㄒㄩㄝˊ _ ㄒㄧㄢˋ ㄗㄞˋ ㄑㄧㄥˇ ㄊㄚ ㄇㄣ˙ ㄐㄧㄝˋ ㄕㄠˋ ㄗˋ ㄐㄧˇ _", pinyinStr: "jīn tiān _ wǒ men yǒu liǎng ge xīn tóng xué _ xiàn zài qǐng tā men jiè shào zì jǐ _" }, { text: "大家好，我叫方友朋，今年八歲，我最喜歡跟爸爸一起游泳。", zhuyinStr: "ㄉㄚˋ ㄐㄧㄚ ㄏㄠˇ _ ㄨㄛˇ ㄐㄧㄠˋ ㄈㄤ ㄧㄡˇ ㄆㄥˊ _ ㄐㄧㄣ ㄋㄧㄢˊ ㄅㄚ ㄙㄨㄟˋ _ ㄨㄛˇ ㄗㄨㄟˋ ㄒㄧˇ ㄏㄨㄢ ㄍㄣ ㄅㄚˋ ㄅㄚ˙ ㄧˋ ㄑㄧˇ ㄧㄡˊ ㄩㄥˇ _", pinyinStr: "dà jiā hǎo _ wǒ jiào fāng yǒu péng _ jīn nián bā suì _ wǒ zuì xǐ huān gēn bà ba yì qǐ yóu yǒng _" }, { text: "大家好，我叫張莉，今年七歲，我比較喜歡看書。", zhuyinStr: "ㄉㄚˋ ㄐㄧㄚ ㄏㄠˇ _ ㄨㄛˇ ㄐㄧㄠˋ ㄓㄤ ㄌㄧˋ _ ㄐㄧㄣ ㄋㄧㄢˊ ㄑㄧ ㄙㄨㄟˋ _ ㄨㄛˇ ㄅㄧˇ ㄐㄧㄠˋ ㄒㄧˇ ㄏㄨㄢ ㄎㄢˋ ㄕㄨ _", pinyinStr: "dà jiā hǎo _ wǒ jiào zhāng lì _ jīn nián qī suì _ wǒ bǐ jiào xǐ huān kàn shū _" }, { text: "你們好，我叫李大文。很高興認識你們。", zhuyinStr: "ㄋㄧˇ ㄇㄣ˙ ㄏㄠˇ _ ㄨㄛˇ ㄐㄧㄠˋ ㄌㄧˇ ㄉㄚˋ ㄨㄣˊ _ ㄏㄣˇ ㄍㄠ ㄒㄧㄥˋ ㄖㄣˋ ㄕ˙ ㄋㄧˇ ㄇㄣ˙ _", pinyinStr: "nǐ men hǎo _ wǒ jiào lǐ dà wén _ hěn gāo xìng rèn shi nǐ men _" }, { text: "歡迎你們來中文學校學華語。", zhuyinStr: "ㄏㄨㄢ ㄧㄥˊ ㄋㄧˇ ㄇㄣ˙ ㄌㄞˊ ㄓㄨㄥ ㄨㄣˊ ㄒㄩㄝˊ ㄒㄧㄠˋ ㄒㄩㄝˊ ㄏㄨㄚˊ ㄩˇ _", pinyinStr: "huān yíng nǐ men lái zhōng wén xué xiào xué huá yǔ _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
+      { id: 'L2', treasure: '🖼️', treasureName: '照片相框', treasureNameEn: 'Photo Frame', title: '第二課：我爸爸做生意', titleEn: 'Lesson 2: My Dad Does Business', sentences: [ { text: "張莉，照片裡面的人是誰？", zhuyinStr: "ㄓㄤ ㄌㄧˋ _ ㄓㄠˋ ㄆㄧㄢˋ ㄌㄧˇ ㄇㄧㄢˋ ㄉㄜ˙ ㄖㄣˊ ㄕˋ ㄕㄟˊ _", pinyinStr: "zhāng lì _ zhào piàn lǐ miàn de rén shì shéi _" }, { text: "左邊是我外公，他以前是醫生，右邊是我外婆。", zhuyinStr: "ㄗㄨㄛˇ ㄅㄧㄢ ㄕˋ ㄨㄛˇ ㄨㄞˋ ㄍㄨㄥ _ ㄊㄚ ㄧˇ ㄑㄧㄢˊ ㄕˋ ㄧ ㄕㄥ _ ㄧㄡˋ ㄅㄧㄢ ㄕˋ ㄨㄛˇ ㄨㄞˋ ㄆㄛˊ _", pinyinStr: "zuǒ biān shì wǒ wài gōng _ tā yǐ qián shì yī shēng _ yòu biān shì wǒ wài pó _" }, { text: "你爸爸媽媽做什麼工作？", zhuyinStr: "ㄋㄧˇ ㄅㄚˋ ㄅㄚ˙ ㄇㄚ ㄇㄚ˙ ㄗㄨㄛˋ ㄕㄣˊ ㄇㄜ˙ ㄍㄨㄥ ㄗㄨㄛˋ _", pinyinStr: "nǐ bà ba mā ma zuò shén me gōng zuò _" }, { text: "我爸爸做生意，我媽媽幫他。你爸爸媽媽呢？", zhuyinStr: "ㄨㄛˇ ㄅㄚˋ ㄅㄚ˙ ㄗㄨㄛˋ ㄕㄥ ㄧˋ _ ㄨㄛˇ ㄇㄚ ㄇㄚ˙ ㄅㄤ ㄊㄚ _ ㄋㄧˇ ㄅㄚˋ ㄅㄚ˙ ㄇㄚ ㄇㄚ˙ ㄋㄜ˙ _", pinyinStr: "wǒ bà ba zuò shēng yì _ wǒ mā ma bāng tā _ nǐ bà ba mā ma ne _" }, { text: "我爸爸在電腦公司上班，我媽媽在銀行工作。", zhuyinStr: "ㄨㄛˇ ㄅㄚˋ ㄅㄚ˙ ㄗㄞˋ ㄉㄧㄢˋ ㄋㄠˇ ㄍㄨㄥ ㄙ ㄕㄤˋ ㄅㄢ _ ㄨㄛˇ ㄇㄚ ㄇㄚ˙ ㄗㄞˋ ㄧㄣˊ ㄏㄤˊ ㄍㄨㄥ ㄗㄨㄛˋ _", pinyinStr: "wǒ bà ba zài diàn nǎo gōng sī shàng bān _ wǒ mā ma zài yín háng gōng zuò _" }, { text: "你以後想做什麼？", zhuyinStr: "ㄋㄧˇ ㄧˇ ㄏㄡˋ ㄒㄧㄤˇ ㄗㄨㄛˋ ㄕㄣˊ ㄇㄜ˙ _", pinyinStr: "nǐ yǐ hòu xiǎng zuò shén me _" }, { text: "我以後想跟爸爸一樣。", zhuyinStr: "ㄨㄛˇ ㄧˇ ㄏㄡˋ ㄒㄧㄤˇ ㄍㄣ ㄅㄚˋ ㄅㄚ˙ ㄧˊ ㄧㄤˋ _", pinyinStr: "wǒ yǐ hòu xiǎng gēn bà ba yí yàng _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
+      { id: 'L3', treasure: '🛒', treasureName: '超市推車', treasureNameEn: 'Shopping Cart', title: '第三課：去超級市場', titleEn: 'Lesson 3: Going to the Supermarket', sentences: [ { text: "媽媽，你要去哪裡？", zhuyinStr: "ㄇㄚ ㄇㄚ˙ _ ㄋㄧˇ ㄧㄠˋ ㄑㄩˋ ㄋㄚˇ ㄌㄧˇ _", pinyinStr: "mā ma _ nǐ yào qù nǎ lǐ _" }, { text: "我要去附近的超級市場買東西，你要跟我一起去嗎？", zhuyinStr: "ㄨㄛˇ ㄧㄠˋ ㄑㄩˋ ㄈㄨˋ ㄐㄧㄣˋ ㄉㄜ˙ ㄔㄠ ㄐㄧˊ ㄕˋ ㄔㄤˇ ㄇㄞˇ ㄉㄨㄥ ㄒㄧ _ ㄋㄧˇ ㄧㄠˋ ㄍㄣ ㄨㄛˇ ㄧˋ ㄑㄧˇ ㄑㄩˋ ㄇㄚ˙ _", pinyinStr: "wǒ yào qù fù jìn de chāo jí shì chǎng mǎi dōng xi _ nǐ yào gēn wǒ yì qǐ qù ma _" }, { text: "要，我想去買巧克力冰淇淋。", zhuyinStr: "ㄧㄠˋ _ ㄨㄛˇ ㄒㄧㄤˇ ㄑㄩˋ ㄇㄞˇ ㄑㄧㄠˇ ㄎㄜˋ ㄌㄧˋ ㄅㄧㄥ ㄑㄧˊ ㄌㄧㄣˊ _", pinyinStr: "yào _ wǒ xiǎng qù mǎi qiǎo kè lì bīng qí lín _" }, { text: "你今天要買什麼？", zhuyinStr: "ㄋㄧˇ ㄐㄧㄣ ㄊㄧㄢ ㄧㄠˋ ㄇㄞˇ ㄕㄣˊ ㄇㄜ˙ _", pinyinStr: "nǐ jīn tiān yào mǎi shén me _" }, { text: "我今天要買魚、牛肉、青菜，還要買米。", zhuyinStr: "ㄨㄛˇ ㄐㄧㄣ ㄊㄧㄢ ㄧㄠˋ ㄇㄞˇ ㄩˊ _ ㄋㄧㄡˊ ㄖㄡˋ _ ㄑㄧㄥ ㄘㄞˋ _ ㄏㄞˊ ㄧㄠˋ ㄇㄞˇ ㄇㄧˇ _", pinyinStr: "wǒ jīn tiān yào mǎi yú _ niú ròu _ qīng cài _ hái yào mǎi mǐ _" }, { text: "我也可以買糖果嗎？", zhuyinStr: "ㄨㄛˇ ㄧㄝˇ ㄎㄜˇ ㄧˇ ㄇㄞˇ ㄊㄤˊ ㄍㄨㄛˇ ㄇㄚ˙ _", pinyinStr: "wǒ yě kě yǐ mǎi táng guǒ ma _" }, { text: "我們去看一下吧！", zhuyinStr: "ㄨㄛˇ ㄇㄣ˙ ㄑㄩˋ ㄎㄢˋ ㄧˊ ㄒㄧㄚˋ ㄅㄚ˙ _", pinyinStr: "wǒ men qù kàn yí xià ba _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
+      { id: 'L4', treasure: '🍔', treasureName: '漢堡', treasureNameEn: 'Hamburger', title: '第四課：我想吃漢堡', titleEn: 'Lesson 4: I Want a Hamburger', sentences: [ { text: "我想吃漢堡跟薯條，我們可不可以出去吃？", zhuyinStr: "ㄨㄛˇ ㄒㄧㄤˇ ㄔ ㄏㄢˋ ㄅㄠˇ ㄍㄣ ㄕㄨˇ ㄊㄧㄠˊ _ ㄨㄛˇ ㄇㄣ˙ ㄎㄜˇ ㄅㄨˋ ㄎㄜˇ ㄧˇ ㄔㄨ ㄑㄩˋ ㄔ _", pinyinStr: "wǒ xiǎng chī hàn bǎo gēn shǔ tiáo _ wǒ men kě bù kě yǐ chū qù chī _" }, { text: "今天先在家吃，週末再出去吃吧！", zhuyinStr: "ㄐㄧㄣ ㄊㄧㄢ ㄒㄧㄢ ㄗㄞˋ ㄐㄧㄚ ㄔ _ ㄓㄡ ㄇㄛˋ ㄗㄞˋ ㄔㄨ ㄑㄩˋ ㄔ ㄅㄚ˙ _", pinyinStr: "jīn tiān xiān zài jiā chī _ zhōu mò zài chū qù chī ba _" }, { text: "今天晚餐想吃什麼？", zhuyinStr: "ㄐㄧㄣ ㄊㄧㄢ ㄨㄢˇ ㄘㄢ ㄒㄧㄤˇ ㄔ ㄕㄣˊ ㄇㄜ˙ _", pinyinStr: "jīn tiān wǎn cān xiǎng chī shén me _" }, { text: "我想吃麵。文文，你呢？", zhuyinStr: "ㄨㄛˇ ㄒㄧㄤˇ ㄔ ㄇㄧㄢˋ _ ㄨㄣˊ ㄨㄣˊ _ ㄋㄧˇ ㄋㄜ˙ _", pinyinStr: "wǒ xiǎng chī miàn _ wén wen _ nǐ ne _" }, { text: "我想吃蛋炒飯，有湯嗎？", zhuyinStr: "ㄨㄛˇ ㄒㄧㄤˇ ㄔ ㄉㄢˋ ㄔㄠˇ ㄈㄢˋ _ ㄧㄡˇ ㄊㄤ ㄇㄚ˙ _", pinyinStr: "wǒ xiǎng chī dàn chǎo fàn _ yǒu tāng ma _" }, { text: "我已經做了玉米湯。", zhuyinStr: "ㄨㄛˇ ㄧˇ ㄐㄧㄥ ㄗㄨㄛˋ ㄌㄜ˙ ㄩˋ ㄇㄧˇ ㄊㄤ _", pinyinStr: "wǒ yǐ jīng zuò le yù mǐ tāng _" }, { text: "媽，我現在很餓，想快點吃晚飯，好嗎？", zhuyinStr: "ㄇㄚ _ ㄨㄛˇ ㄒㄧㄢˋ ㄗㄞˋ ㄏㄣˇ ㄜˋ _ ㄒㄧㄤˇ ㄎㄨㄞˋ ㄉㄧㄢˇ ㄔ ㄨㄢˇ ㄈㄢˋ _ ㄏㄠˇ ㄇㄚ˙ _", pinyinStr: "mā _ wǒ xiàn zài hěn è _ xiǎng kuài diǎn chī wǎn fàn _ hǎo ma _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
+      { id: 'L5', treasure: '🍁', treasureName: '秋天葉子', treasureNameEn: 'Autumn Leaf', title: '第五課：春天快到了', titleEn: 'Lesson 5: Spring is Coming', sentences: [ { text: "你看！樹葉變黃了，秋天快到了。", zhuyinStr: "ㄋㄧˇ ㄎㄢˋ _ ㄕㄨˋ ㄧㄝˋ ㄅㄧㄢˋ ㄏㄨㄤˊ ㄌㄜ˙ _ ㄑㄧㄡ ㄊㄧㄢ ㄎㄨㄞˋ ㄉㄠˋ ㄌㄜ˙ _", pinyinStr: "nǐ kàn _ shù yè biàn huáng le _ qiū tiān kuài dào le _" }, { text: "可是草還是綠色的。", zhuyinStr: "ㄎㄜˇ ㄕˋ ㄘㄠˇ ㄏㄞˊ ㄕˋ ㄌㄩˋ ㄙㄜˋ ㄉㄜ˙ _", pinyinStr: "kě shì cǎo hái shì lǜ sè de _" }, { text: "秋天天氣很好，我覺得很舒服。", zhuyinStr: "ㄑㄧㄡ ㄊㄧㄢ ㄊㄧㄢ ㄑㄧˋ ㄏㄣˇ ㄏㄠˇ _ ㄨㄛˇ ㄐㄩㄝˊ ㄉㄜ˙ ㄏㄣˇ ㄕㄨ ㄈㄨˊ _", pinyinStr: "qiū tiān tiān qì hěn hǎo _ wǒ jué de hěn shū fu _" }, { text: "春天也不錯。", zhuyinStr: "ㄔㄨㄣ ㄊㄧㄢ ㄧㄝˇ ㄅㄨˊ ㄘㄨㄛˋ _", pinyinStr: "chūn tiān yě bú cuò _" }, { text: "春天的時候，我們家院子有很多顏色的花。", zhuyinStr: "ㄔㄨㄣ ㄊㄧㄢ ㄉㄜ˙ ㄕˊ ㄏㄡˋ _ ㄨㄛˇ ㄇㄣ˙ ㄐㄧㄚ ㄩㄢˋ ㄗ˙ ㄧㄡˇ ㄏㄣˇ ㄉㄨㄛ ㄧㄢˊ ㄙㄜˋ ㄉㄜ˙ ㄏㄨㄚ _", pinyinStr: "chūn tiān de shí hòu _ wǒ men jiā yuàn zi yǒu hěn duō yán sè de huā _" }, { text: "紅色的、白色的都有。", zhuyinStr: "ㄏㄨㄥˊ ㄙㄜˋ ㄉㄜ˙ _ ㄅㄞˊ ㄙㄜˋ ㄉㄜ˙ ㄉㄡ ㄧㄡˇ _", pinyinStr: "hóng sè de _ bái sè de dōu yǒu _" }, { text: "我覺得紅色的花最漂亮。", zhuyinStr: "ㄨㄛˇ ㄐㄩㄝˊ ㄉㄜ˙ ㄏㄨㄥˊ ㄙㄜˋ ㄉㄜ˙ ㄏㄨㄚ ㄗㄨㄟˋ ㄆㄧㄠˋ ㄌㄧㄤˋ _", pinyinStr: "wǒ jué de hóng sè de huā zuì piào liàng _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
+      { id: 'L6', treasure: '🧧', treasureName: '新年紅包', treasureNameEn: 'Red Envelope', title: '第六課：農曆新年', titleEn: 'Lesson 6: Lunar New Year', sentences: [ { text: "老師說農曆新年快到了。", zhuyinStr: "ㄌㄠˇ ㄕ ㄕㄨㄛ ㄋㄨㄥˊ ㄌㄧˋ ㄒㄧㄣ ㄋㄧㄢˊ ㄎㄨㄞˋ ㄉㄠˋ ㄌㄜ˙ _", pinyinStr: "lǎo shī shuō nóng lì xīn nián kuài dào le _" }, { text: "對，下個星期五是農曆新年。", zhuyinStr: "ㄉㄨㄟˋ _ ㄒㄧㄚˋ ㄍㄜ˙ ㄒㄧㄥ ㄑㄧ ㄨˇ ㄕˋ ㄋㄨㄥˊ ㄌㄧˋ ㄒㄧㄣ ㄋㄧㄢˊ _", pinyinStr: "duì _ xià ge xīng qī wǔ shì nóng lì xīn nián _" }, { text: "媽媽會去華人超市買年糕嗎？", zhuyinStr: "ㄇㄚ ㄇㄚ˙ ㄏㄨㄟˋ ㄑㄩˋ ㄏㄨㄚˊ ㄖㄣˊ ㄔㄠ ㄕˋ ㄇㄞˇ ㄋㄧㄢˊ ㄍㄠ ㄇㄚ˙ _", pinyinStr: "mā ma huì qù huá rén chāo shì mǎi nián gāo ma _" }, { text: "會，那天我們還要給爺爺奶奶拜年。", zhuyinStr: "ㄏㄨㄟˋ _ ㄋㄚˋ ㄊㄧㄢ ㄨㄛˇ ㄇㄣ˙ ㄏㄞˊ ㄧㄠˋ ㄍㄟˇ ㄧㄝˊ ㄧㄝ˙ ㄋㄞˇ ㄋㄞ˙ ㄅㄞˋ ㄋㄧㄢˊ _", pinyinStr: "huì _ nà tiān wǒ men hái yào gěi yé ye nǎi nai bài nián _" }, { text: "太好了，爺爺每年都會給我紅包。", zhuyinStr: "ㄊㄞˋ ㄏㄠˇ ㄌㄜ˙ _ ㄧㄝˊ ㄧㄝ˙ ㄇㄟˇ ㄋㄧㄢˊ ㄉㄡ ㄏㄨㄟˋ ㄍㄟˇ ㄨㄛˇ ㄏㄨㄥˊ ㄅㄠ _", pinyinStr: "tài hǎo le _ yé ye měi nián dōu huì gěi wǒ hóng bāo _" }, { text: "如果在臺灣，我們還會貼春聯、放鞭炮。", zhuyinStr: "ㄖㄨˊ ㄍㄨㄛˇ ㄗㄞˋ ㄊㄞˊ ㄨㄢ _ ㄨㄛˇ ㄇㄣ˙ ㄏㄞˊ ㄏㄨㄟˋ ㄊㄧㄝ ㄔㄨㄣ ㄌㄧㄢˊ _ ㄈㄤˋ ㄅㄧㄢ ㄆㄠˋ _", pinyinStr: "rú guǒ zài tái wān _ wǒ men hái huì tiē chūn lián _ fàng biān pào _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
+      { id: 'L7', treasure: '🪥', treasureName: '牙刷', treasureNameEn: 'Toothbrush', title: '第七課：早一點睡覺', titleEn: 'Lesson 7: Go to Sleep Earlier', sentences: [ { text: "大文，該起床了！來不及了！", zhuyinStr: "ㄉㄚˋ ㄨㄣˊ _ ㄍㄞ ㄑㄧˇ ㄔㄨㄤˊ ㄌㄜ˙ _ ㄌㄞˊ ㄅㄨˋ ㄐㄧˊ ㄌㄜ˙ _", pinyinStr: "dà wén _ gāi qǐ chuáng le _ lái bù jí le _" }, { text: "我很累，還想睡覺。", zhuyinStr: "ㄨㄛˇ ㄏㄣˇ ㄌㄟˋ _ ㄏㄞˊ ㄒㄧㄤˇ ㄕㄨㄟˋ ㄐㄧㄠˋ _", pinyinStr: "wǒ hěn lèi _ hái xiǎng shuì jiào _" }, { text: "今天晚上早一點睡，現在趕快去刷牙、洗澡。", zhuyinStr: "ㄐㄧㄣ ㄊㄧㄢ ㄨㄢˇ ㄕㄤˋ ㄗㄠˇ ㄧˋ ㄉㄧㄢˇ ㄕㄨㄟˋ _ ㄒㄧㄢˋ ㄗㄞˋ ㄍㄢˇ ㄎㄨㄞˋ ㄑㄩˋ ㄕㄨㄚ ㄧㄚˊ _ ㄒㄧˇ ㄗㄠˇ _", pinyinStr: "jīn tiān wǎn shàng zǎo yì diǎn shuì _ xiàn zài gǎn kuài qù shuā yá _ xǐ zǎo _" }, { text: "我昨天晚上洗過澡了。", zhuyinStr: "ㄨㄛˇ ㄗㄨㄛˊ ㄊㄧㄢ ㄨㄢˇ ㄕㄤˋ ㄒㄧˇ ㄍㄨㄛˋ ㄗㄠˇ ㄌㄜ˙ _", pinyinStr: "wǒ zuó tiān wǎn shàng xǐ guò zǎo le _" }, { text: "還有，別忘了用肥皂洗臉。", zhuyinStr: "ㄏㄞˊ ㄧㄡˇ _ ㄅㄧㄝˊ ㄨㄤˋ ㄌㄜ˙ ㄩㄥˋ ㄈㄟˊ ㄗㄠˋ ㄒㄧˇ ㄌㄧㄢˇ _", pinyinStr: "hái yǒu _ bié wàng le yòng féi zào xǐ liǎn _" }, { text: "我知道了，要洗乾淨。", zhuyinStr: "ㄨㄛˇ ㄓ ㄉㄠˋ ㄌㄜ˙ _ ㄧㄠˋ ㄒㄧˇ ㄍㄢ ㄐㄧㄥˋ _", pinyinStr: "wǒ zhī dào le _ yào xǐ gān jìng _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
+      { id: 'L8', treasure: '🐶', treasureName: '寵物小狗', treasureNameEn: 'Pet Dog', title: '第八課：我的寵物', titleEn: 'Lesson 8: My Pet', sentences: [ { text: "昨天我爸爸的朋友送給我一隻狗，你們家有寵物嗎？", zhuyinStr: "ㄗㄨㄛˊ ㄊㄧㄢ ㄨㄛˇ ㄅㄚˋ ㄅㄚ˙ ㄉㄜ˙ ㄆㄥˊ ㄧㄡˇ ㄙㄨㄥˋ ㄍㄟˇ ㄨㄛˇ ㄧˋ ㄓ ㄍㄡˇ _ ㄋㄧˇ ㄇㄣ˙ ㄐㄧㄚ ㄧㄡˇ ㄔㄨㄥˇ ㄨˋ ㄇㄚ˙ _", pinyinStr: "zuó tiān wǒ bà ba de péng yǒu sòng gěi wǒ yì zhī gǒu _ nǐ men jiā yǒu chǒng wù ma _" }, { text: "有，我家有兩隻狗，我每天都帶牠們去散步。", zhuyinStr: "ㄧㄡˇ _ ㄨㄛˇ ㄐㄧㄚ ㄧㄡˇ ㄌㄧㄤˇ ㄓ ㄍㄡˇ _ ㄨㄛˇ ㄇㄟˇ ㄊㄧㄢ ㄉㄡ ㄉㄞˋ ㄊㄚ ㄇㄣ˙ ㄑㄩˋ ㄙㄢˋ ㄅㄨˋ _", pinyinStr: "yǒu _ wǒ jiā yǒu liǎng zhī gǒu _ wǒ měi tiān dōu dài tā men qù sàn bù _" }, { text: "張莉，你養過狗嗎？", zhuyinStr: "ㄓㄤ ㄌㄧˋ _ ㄋㄧˇ ㄧㄤˇ ㄍㄨㄛˋ ㄍㄡˇ ㄇㄚ˙ _", pinyinStr: "zhāng lì _ nǐ yǎng guò gǒu ma _" }, { text: "我沒養過狗，我去年養了一隻貓，可是上個月不見了。", zhuyinStr: "ㄨㄛˇ ㄇㄟˊ ㄧㄤˇ ㄍㄨㄛˋ ㄍㄡˇ _ ㄨㄛˇ ㄑㄩˋ ㄋㄧㄢˊ ㄧㄤˇ ㄌㄜ˙ ㄧˋ ㄓ ㄇㄠ _ ㄎㄜˇ ㄕˋ ㄕㄤˋ ㄍㄜ˙ ㄩㄝˋ ㄅㄨˊ ㄐㄧㄢˋ ㄌㄜ˙ _", pinyinStr: "wǒ méi yǎng guò gǒu _ wǒ qù nián yǎng le yì zhī māo _ kě shì shàng ge yuè bú jiàn le _" }, { text: "我也養過貓，非常可愛，我每天都餵牠。", zhuyinStr: "ㄨㄛˇ ㄧㄝˇ ㄧㄤˇ ㄍㄨㄛˋ ㄇㄠ _ ㄈㄟ ㄔㄤˊ ㄎㄜˇ ㄞˋ _ ㄨㄛˇ ㄇㄟˇ ㄊㄧㄢ ㄉㄡ ㄨㄟˋ ㄊㄚ _", pinyinStr: "wǒ yě yǎng guò māo _ fēi cháng kě ài _ wǒ měi tiān dōu wèi tā _" }, { text: "以後我想養一隻兔子。", zhuyinStr: "ㄧˇ ㄏㄡˋ ㄨㄛˇ ㄒㄧㄤˇ ㄧㄤˇ ㄧˋ ㄓ ㄊㄨˋ ㄗ˙ _", pinyinStr: "yǐ hòu wǒ xiǎng yǎng yì zhī tù zi _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
+      { id: 'L9', treasure: '🧭', treasureName: '指南針', treasureNameEn: 'Compass', title: '第九課：音樂教室在北方', titleEn: 'Lesson 9: Music Room is in the North', sentences: [ { text: "東明，這是什麼？", zhuyinStr: "ㄉㄨㄥ ㄇㄧㄥˊ _ ㄓㄜˋ ㄕˋ ㄕㄣˊ ㄇㄜ˙ _", pinyinStr: "dōng míng _ zhè shì shén me _" }, { text: "指南針，也叫指北針，它告訴我們南方和北方在哪裡。", zhuyinStr: "ㄓˇ ㄋㄢˊ ㄓㄣ _ ㄧㄝˇ ㄐㄧㄠˋ ㄓˇ ㄅㄟˇ ㄓㄣ _ ㄊㄚ ㄍㄠˋ ㄙㄨˋ ㄨㄛˇ ㄇㄣ˙ ㄋㄢˊ ㄈㄤ ㄏㄢˋ ㄅㄟˇ ㄈㄤ ㄗㄞˋ ㄋㄚˇ ㄌㄧˇ _", pinyinStr: "zhǐ nán zhēn _ yě jiào zhǐ běi zhēn _ tā gào sù wǒ men nán fāng hàn běi fāng zài nǎ lǐ _" }, { text: "音樂教室是什麼方向？", zhuyinStr: "ㄧㄣ ㄩㄝˋ ㄐㄧㄠˋ ㄕˋ ㄕˋ ㄕㄣˊ ㄇㄜ˙ ㄈㄤ ㄒㄧㄤˋ _", pinyinStr: "yīn yuè jiào shì shì shén me fāng xiàng _" }, { text: "音樂教室在北方，校門口在南方。", zhuyinStr: "ㄧㄣ ㄩㄝˋ ㄐㄧㄠˋ ㄕˋ ㄗㄞˋ ㄅㄟˇ ㄈㄤ _ ㄒㄧㄠˋ ㄇㄣˊ ㄎㄡˇ ㄗㄞˋ ㄋㄢˊ ㄈㄤ _", pinyinStr: "yīn yuè jiào shì zài běi fāng _ xiào mén kǒu zài nán fāng _" }, { text: "足球場在東方，還是西方？", zhuyinStr: "ㄗㄨˊ ㄑㄧㄡˊ ㄔㄤˇ ㄗㄞˋ ㄉㄨㄥ ㄈㄤ _ ㄏㄞˊ ㄕˋ ㄒㄧ ㄈㄤ _", pinyinStr: "zú qiú chǎng zài dōng fāng _ hái shì xī fāng _" }, { text: "因為音樂教室在北方，所以足球場在東方。", zhuyinStr: "ㄧㄣ ㄨㄟˋ ㄧㄣ ㄩㄝˋ ㄐㄧㄠˋ ㄕˋ ㄗㄞˋ ㄅㄟˇ ㄈㄤ _ ㄙㄨㄛˇ ㄧˇ ㄗㄨˊ ㄑㄧㄡˊ ㄔㄤˇ ㄗㄞˋ ㄉㄨㄥ ㄈㄤ _", pinyinStr: "yīn wèi yīn yuè jiào shì zài běi fāng _ suǒ yǐ zú qiú chǎng zài dōng fāng _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
+      { id: 'L10', treasure: '🇹🇼', treasureName: '台灣國旗', treasureNameEn: 'Taiwan Flag', title: '第十課：外公外婆住在臺灣', titleEn: 'Lesson 10: Grandparents Live in Taiwan', sentences: [ { text: "暑假的時候，我會去臺灣看外公、外婆。", zhuyinStr: "ㄕㄨˇ ㄐㄧㄚˋ ㄉㄜ˙ ㄕˊ ㄏㄡˋ _ ㄨㄛˇ ㄏㄨㄟˋ ㄑㄩˋ ㄊㄞˊ ㄨㄢ ㄎㄢˋ ㄨㄞˋ ㄍㄨㄥ _ ㄨㄞˋ ㄆㄛˊ _", pinyinStr: "shǔ jià de shí hòu _ wǒ huì qù tái wān kàn wài gōng _ wài pó _" }, { text: "你外公、外婆家在哪裡？", zhuyinStr: "ㄋㄧˇ ㄨㄞˋ ㄍㄨㄥ _ ㄨㄞˋ ㄆㄛˊ ㄐㄧㄚ ㄗㄞˋ ㄋㄚˇ ㄌㄧˇ _", pinyinStr: "nǐ wài gōng _ wài pó jiā zài nǎ lǐ _" }, { text: "他們本來住在臺北，退休以後，跟我的舅舅住在臺南。", zhuyinStr: "ㄊㄚ ㄇㄣ˙ ㄅㄣˇ ㄌㄞˊ ㄓㄨˋ ㄗㄞˋ ㄊㄞˊ ㄅㄟˇ _ ㄊㄨㄟˋ ㄒㄧㄡ ㄧˇ ㄏㄡˋ _ ㄍㄣ ㄨㄛˇ ㄉㄜ˙ ㄐㄧㄡˋ ㄐㄧㄡ˙ ㄓㄨˋ ㄗㄞˋ ㄊㄞˊ ㄋㄢˊ _", pinyinStr: "tā men běn lái zhù zài tái běi _ tuī xiū yǐ hòu _ gēn wǒ de jiù jiu zhù zài tái nán _" }, { text: "你們每年都去看外公、外婆嗎？", zhuyinStr: "ㄋㄧˇ ㄇㄣ˙ ㄇㄟˇ ㄋㄧㄢˊ ㄉㄡ ㄑㄩˋ ㄎㄢˋ ㄨㄞˋ ㄍㄨㄥ _ ㄨㄞˋ ㄆㄛˊ ㄇㄚ˙ _", pinyinStr: "nǐ men měi nián dōu qù kàn wài gōng _ wài pó ma _" }, { text: "我們每年都去看他們一次，你外公、外婆住在哪裡？", zhuyinStr: "ㄨㄛˇ ㄇㄣ˙ ㄇㄟˇ ㄋㄧㄢˊ ㄉㄡ ㄑㄩˋ ㄎㄢˋ ㄊㄚ ㄇㄣ˙ ㄧˊ ㄘˋ _ ㄋㄧˇ ㄨㄞˋ ㄍㄨㄥ _ ㄨㄞˋ ㄆㄛˊ ㄓㄨˋ ㄗㄞˋ ㄋㄚˇ ㄌㄧˇ _", pinyinStr: "wǒ men měi nián dōu qù kàn tā men yí cì _ nǐ wài gōng _ wài pó zhù zài nǎ lǐ _" }, { text: "我外公、外婆現在住在紐約，他們下個月會來看我們。", zhuyinStr: "ㄨㄛˇ ㄨㄞˋ ㄍㄨㄥ _ ㄨㄞˋ ㄆㄛˊ ㄒㄧㄢˋ ㄗㄞˋ ㄓㄨˋ ㄗㄞˋ ㄋㄧㄡˇ ㄩㄝ _ ㄊㄚ ㄇㄣ˙ ㄒㄧㄚˋ ㄍㄜ˙ ㄩㄝˋ ㄏㄨㄟˋ ㄌㄞˋ ㄎㄢˋ ㄨㄛˇ ㄇㄣ˙ _", pinyinStr: "wǒ wài gōng _ wài pó xiàn zài zhù zài niǔ yuē _ tā men xià ge yuè huì lái kàn wǒ men _" }, { text: "我外公、外婆喜歡旅行，常常來看我們，也常去法國看阿姨。", zhuyinStr: "ㄨㄛˇ ㄨㄞˋ ㄍㄨㄥ _ ㄨㄞˋ ㄆㄛˊ ㄒㄧˇ ㄏㄨㄢ ㄌㄩˇ ㄒㄧㄥˊ _ ㄔㄤˊ ㄔㄤˊ ㄌㄞˋ ㄎㄢˋ ㄨㄛˇ ㄇㄣ˙ _ ㄧㄝˇ ㄔㄤˊ ㄑㄩˋ ㄈㄚˇ ㄍㄨㄛˊ ㄎㄢˋ ㄚ ㄧˊ _", pinyinStr: "wǒ wài gōng _ wài pó xǐ huān lǚ xíng _ cháng cháng lái kàn wǒ men _ yě cháng qù fǎ guó kàn ā yí _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
+      { id: 'L11', treasure: '✈️', treasureName: '飛機', treasureNameEn: 'Airplane', title: '第十一課：去動物園', titleEn: 'Lesson 11: Going to the Zoo', sentences: [ { text: "下個星期五，學校要帶我們去動物園玩。", zhuyinStr: "ㄒㄧㄚˋ ㄍㄜ˙ ㄒㄧㄥ ㄑㄧ ㄨˇ _ ㄒㄩㄝˊ ㄒㄧㄠˋ ㄧㄠˋ ㄉㄞˋ ㄨㄛˇ ㄇㄣ˙ ㄑㄩˋ ㄉㄨㄥˋ ㄨˋ ㄩㄢˊ ㄨㄢˊ _", pinyinStr: "xià ge xīng qī wǔ _ xué xiào yào dài wǒ men qù dòng wù yuán wán _" }, { text: "太好了！你可以看到你喜歡的大象和老虎。", zhuyinStr: "ㄊㄞˋ ㄏㄠˇ ㄌㄜ˙ _ ㄋㄧˇ ㄎㄜˇ ㄧˇ ㄎㄢˋ ㄉㄠˋ ㄋㄧˇ ㄒㄧˇ ㄏㄨㄢ ㄉㄜ˙ ㄉㄚˋ ㄒㄧㄤˋ ㄏㄢˋ ㄌㄠˇ ㄏㄨˇ _", pinyinStr: "tài hǎo le _ nǐ kě yǐ kàn dào nǐ xǐ huān de dà xiàng hàn lǎo hǔ _" }, { text: "這一次我希望可以看到熊貓和猴子。", zhuyinStr: "ㄓㄜˋ ㄧˊ ㄘˋ ㄨㄛˇ ㄒㄧ ㄨㄤˋ ㄎㄜˇ ㄧˇ ㄎㄢˋ ㄉㄠˋ ㄒㄩㄥˊ ㄇㄠ ㄏㄢˋ ㄏㄡˊ ㄗ˙ _", pinyinStr: "zhè yí cì wǒ xī wàng kě yǐ kàn dào xióng māo hàn hóu zi _" }, { text: "對，以前我去的時候，動物園沒有熊貓。", zhuyinStr: "ㄉㄨㄟˋ _ ㄧˇ ㄑㄧㄢˊ ㄨㄛˇ ㄑㄩˋ ㄉㄜ˙ ㄕˊ ㄏㄡˋ _ ㄉㄨㄥˋ ㄨˋ ㄩㄢˊ ㄇㄟˊ ㄧㄡˇ ㄒㄩㄥˊ ㄇㄠ _", pinyinStr: "duì _ yǐ qián wǒ qù de shí hòu _ dòng wù yuán méi yǒu xióng māo _" }, { text: "現在不但有熊貓，還有企鵝。", zhuyinStr: "ㄒㄧㄢˋ ㄗㄞˋ ㄅㄨˊ ㄉㄢˋ ㄧㄡˇ ㄒㄩㄥˊ ㄇㄠ _ ㄏㄞˊ ㄧㄡˇ ㄑㄧˋ ㄜˊ _", pinyinStr: "xiàn zài bú dàn yǒu xióng māo _ hái yǒu qì é _" }, { text: "我覺得熊貓胖胖的，真可愛！", zhuyinStr: "ㄨㄛˇ ㄐㄩㄝˊ ㄉㄜ˙ ㄒㄩㄥˊ ㄇㄠ ㄆㄤˋ ㄆㄤˋ ㄉㄜ˙ _ ㄓㄣ ㄎㄜˇ ㄞˋ _", pinyinStr: "wǒ jué de xióng māo pàng pàng de _ zhēn kě ài _" }, { text: "我喜歡長頸鹿，脖子長長的。", zhuyinStr: "ㄨㄛˇ ㄒㄧˇ ㄏㄨㄢ ㄔㄤˊ ㄐㄧㄥˇ ㄌㄨˋ _ ㄅㄛˊ ㄗ˙ ㄔㄤˊ ㄔㄤˊ ㄉㄜ˙ _", pinyinStr: "wǒ xǐ huān cháng jǐng lù _ bó zi cháng cháng de _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) },
+      { id: 'L12', treasure: '💻', treasureName: '電腦', treasureNameEn: 'Computer', title: '第十二課：打網路電話', titleEn: 'Lesson 12: Making an Internet Call', sentences: [ { text: "大文，我現在要用網路給姑姑打電話。", zhuyinStr: "ㄉㄚˋ ㄨㄣˊ _ ㄨㄛˇ ㄒㄧㄢˋ ㄗㄞˋ ㄧㄠˋ ㄩㄥˋ ㄨㄤˇ ㄌㄨˋ ㄍㄟˇ ㄍㄨ ㄍㄨ ㄉㄚˇ ㄉㄧㄢˋ ㄏㄨㄚˋ _", pinyinStr: "dà wén _ wǒ xiàn zài yào yòng wǎng lù gěi gū gu dǎ diàn huà _" }, { text: "可以看到姑姑嗎？我很久沒跟姑姑說話了。", zhuyinStr: "ㄎㄜˇ ㄧˇ ㄎㄢˋ ㄉㄠˋ ㄍㄨ ㄍㄨ ㄇㄚ˙ _ ㄨㄛˇ ㄏㄣˇ ㄐㄧㄡˇ ㄇㄟˊ ㄍㄣ ㄍㄨ ㄍㄨ ㄕㄨㄛ ㄏㄨㄚˋ ㄌㄜ˙ _", pinyinStr: "kě yǐ kàn dào gū gu ma _ wǒ hěn jiǔ méi gēn gū gu shuō huà le _" }, { text: "可以看到她的影像，快一點過來。", zhuyinStr: "ㄎㄜˇ ㄧˇ ㄎㄢˋ ㄉㄠˋ ㄊㄚ ㄉㄜ˙ ㄧㄥˇ ㄒㄧㄤˋ _ ㄎㄨㄞˋ ㄧˋ ㄉㄧㄢˋ ㄍㄨㄛˋ ㄌㄞˊ _", pinyinStr: "kě yǐ kàn dào tā de yǐng xiàng _ kuài yì diǎn guò lái _" }, { text: "大文，你看起來瘦了。", zhuyinStr: "ㄉㄚˋ ㄨㄣˊ _ ㄋㄧˇ ㄎㄢˋ ㄑㄧˇ ㄌㄞˊ ㄕㄡˋ ㄌㄜ˙ _", pinyinStr: "dà wén _ nǐ kàn qǐ lái shòu le _" }, { text: "我沒瘦，我長高了。", zhuyinStr: "ㄨㄛˇ ㄇㄟˊ ㄕㄡˋ _ ㄨㄛˇ ㄓㄤˇ ㄍㄠ ㄌㄜ˙ _", pinyinStr: "wǒ méi shòu _ wǒ zhǎng gāo le _" }, { text: "文文現在也跟你一起去學華語嗎？", zhuyinStr: "ㄨㄣˊ ㄨㄣˊ ㄒㄧㄢˋ ㄗㄞˋ ㄧㄝˇ ㄍㄣ ㄋㄧˇ ㄧˋ ㄑㄧˇ ㄑㄩˋ ㄒㄩㄝˊ ㄏㄨㄚˊ ㄩˇ ㄇㄚ˙ _", pinyinStr: "wén wen xiàn zài yě gēn nǐ yì qǐ qù xué huá yǔ ma _" }, { text: "是啊！上華語課很有意思。", zhuyinStr: "ㄕˋ ㄚ _ ㄕㄤˋ ㄏㄨㄚˊ ㄩˇ ㄎㄜˋ ㄏㄣˇ ㄧㄡˇ ㄧˋ ㄙ˙ _", pinyinStr: "shì a _ shàng huá yǔ kè hěn yǒu yì si _" }, { text: "你好好學華語，以後可以用網路給我寫信。", zhuyinStr: "ㄋㄧˇ ㄏㄠˇ ㄏㄠˇ ㄒㄩㄝˊ ㄏㄨㄚˊ ㄩˇ _ ㄧˇ ㄏㄡˋ ㄎㄜˇ ㄧˇ ㄩㄥˋ ㄨㄤˇ ㄌㄨˋ ㄍㄟˇ ㄨㄛˇ ㄒㄧㄝˇ ㄒㄧㄣˋ _", pinyinStr: "nǐ hǎo hǎo xué huá yǔ _ yǐ hòu kě yǐ yòng wǎng lù gěi wǒ xiě xìn _" }, { text: "沒問題，我一定會好好學華語。", zhuyinStr: "ㄇㄟˊ ㄨㄣˋ ㄊㄧˊ _ ㄨㄛˇ ㄧˊ ㄉㄧㄥˋ ㄏㄨㄟˋ ㄏㄠˇ ㄏㄠˇ ㄒㄩㄝˊ ㄏㄨㄚˊ ㄩˇ _", pinyinStr: "méi wèn tí _ wǒ yí dìng huì hǎo hǎo xué huá yǔ _" } ].map(s => ({ text: s.text, zhuyin: s.zhuyinStr.split(' '), pinyin: s.pinyinStr.split(' ') })) }
     ];
 
     const TRANSLATIONS = { 
@@ -180,7 +189,7 @@
         micNotice1: "請務必允許「麥克風權限」",
         micNotice2: "蘋果 (iPhone/iPad) 請務必使用 Safari",
         micNotice3: "安卓 (Android) 請務必使用 Chrome",
-        leaderboard: "英雄榜", rank: "名次", name: "姓名", score: "最高分", date: "日期", practiceStat: "練習量", lastUpdate: "最後更新", noData: "目前還沒有紀錄，趕快來挑戰吧！"
+        leaderboard: "英雄榜", rank: "名次", name: "姓名", score: "最高分", date: "日期", practiceStat: "練習量", lastUpdate: "最後更新", noData: "目前還沒有紀錄，趕快來挑戰吧！", treasureRoom: "寶物庫"
       }, 
       en: { 
         appTitle: "I can Read", appSubtitle: "Let's Learn Mandarin", tipsTitle: "Quick Tips", 
@@ -206,7 +215,7 @@
         micNotice1: "Please 'Allow' microphone access",
         micNotice2: "iOS (iPhone/iPad): Please use Safari",
         micNotice3: "Android: Please use Chrome",
-        leaderboard: "Leaderboard", rank: "Rank", name: "Name", score: "Best Score", date: "Date", practiceStat: "Practice", lastUpdate: "Last Update", noData: "No records yet, be the first!"
+        leaderboard: "Leaderboard", rank: "Rank", name: "Name", score: "Best Score", date: "Date", practiceStat: "Practice", lastUpdate: "Last Update", noData: "No records yet, be the first!", treasureRoom: "My Treasures"
       } 
     };
 
@@ -246,22 +255,77 @@
       '舒': ['書', '輸', '叔'], '服': ['福', '符'], '游': ['遊', '由', '尤'], '泳': ['勇', '湧']
     };
 
+    // 🌟 全域音效引擎 (修復重複建立導致崩潰的問題)
     let audioCtx = null;
     const playSound = (type) => {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      const ctx = audioCtx;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain); gain.connect(ctx.destination);
-      if (type === 'level-clear') { osc.type = 'sine'; osc.frequency.setValueAtTime(523.25, ctx.currentTime); osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.15); osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.3); osc.frequency.setValueAtTime(1046.50, ctx.currentTime + 0.45); gain.gain.setValueAtTime(0.1, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.8); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.8);
-      } else if (type === 'success') { osc.type = 'sine'; osc.frequency.setValueAtTime(523.25, ctx.currentTime); osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1); osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.2); gain.gain.setValueAtTime(0.1, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.5); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.5);
-      } else if (type === 'mild-success') { osc.type = 'sine'; osc.frequency.setValueAtTime(523.25, ctx.currentTime); osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.15); gain.gain.setValueAtTime(0.1, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.4); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.4);
-      } else if (type === 'try-again') { osc.type = 'triangle'; osc.frequency.setValueAtTime(392.00, ctx.currentTime); osc.frequency.setValueAtTime(329.63, ctx.currentTime + 0.2); gain.gain.setValueAtTime(0.1, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.4); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.4);
-      } else if (type === 'pop') { osc.type = 'sine'; osc.frequency.setValueAtTime(800, ctx.currentTime); gain.gain.setValueAtTime(0.05, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.1); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1); }
-      else if (type === 'combo') {
-        osc.type = 'square'; osc.frequency.setValueAtTime(440, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.2);
-        gain.gain.setValueAtTime(0.1, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.3); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.3);
+      try {
+        if (!window.AudioContext && !window.webkitAudioContext) return;
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const ctx = audioCtx;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain); 
+        gain.connect(ctx.destination);
+        
+        const now = ctx.currentTime;
+        if (type === 'level-clear') { 
+          osc.type = 'sine'; 
+          osc.frequency.setValueAtTime(523.25, now); 
+          osc.frequency.setValueAtTime(659.25, now + 0.15); 
+          osc.frequency.setValueAtTime(783.99, now + 0.3); 
+          osc.frequency.setValueAtTime(1046.50, now + 0.45); 
+          gain.gain.setValueAtTime(0.1, now); 
+          gain.gain.exponentialRampToValueAtTime(0.00001, now + 0.8); 
+          osc.start(now); 
+          osc.stop(now + 0.8);
+        } else if (type === 'success') { 
+          osc.type = 'sine'; 
+          osc.frequency.setValueAtTime(523.25, now); 
+          osc.frequency.setValueAtTime(659.25, now + 0.1); 
+          osc.frequency.setValueAtTime(783.99, now + 0.2); 
+          gain.gain.setValueAtTime(0.1, now); 
+          gain.gain.exponentialRampToValueAtTime(0.00001, now + 0.5); 
+          osc.start(now); 
+          osc.stop(now + 0.5);
+        } else if (type === 'mild-success') { 
+          osc.type = 'sine'; 
+          osc.frequency.setValueAtTime(523.25, now); 
+          osc.frequency.setValueAtTime(659.25, now + 0.15); 
+          gain.gain.setValueAtTime(0.1, now); 
+          gain.gain.exponentialRampToValueAtTime(0.00001, now + 0.4); 
+          osc.start(now); 
+          osc.stop(now + 0.4);
+        } else if (type === 'try-again') { 
+          osc.type = 'triangle'; 
+          osc.frequency.setValueAtTime(392.00, now); 
+          osc.frequency.setValueAtTime(329.63, now + 0.2); 
+          gain.gain.setValueAtTime(0.1, now); 
+          gain.gain.exponentialRampToValueAtTime(0.00001, now + 0.4); 
+          osc.start(now); 
+          osc.stop(now + 0.4);
+        } else if (type === 'pop') { 
+          osc.type = 'sine'; 
+          osc.frequency.setValueAtTime(800, now); 
+          gain.gain.setValueAtTime(0.05, now); 
+          gain.gain.exponentialRampToValueAtTime(0.00001, now + 0.1); 
+          osc.start(now); 
+          osc.stop(now + 0.1); 
+        } else if (type === 'combo') {
+          osc.type = 'square'; 
+          osc.frequency.setValueAtTime(440, now); 
+          osc.frequency.exponentialRampToValueAtTime(880, now + 0.2);
+          gain.gain.setValueAtTime(0.1, now); 
+          gain.gain.exponentialRampToValueAtTime(0.00001, now + 0.3); 
+          osc.start(now); 
+          osc.stop(now + 0.3);
+        }
+      } catch(e) {
+        console.warn("Audio play failed:", e);
       }
     };
 
@@ -295,11 +359,39 @@
       const [showLeaderboard, setShowLeaderboard] = useState(false);
       const [leaderboardData, setLeaderboardData] = useState([]);
       const [totalAttempts, setTotalAttempts] = useState(0);
+      
+      const [showTreasureRoom, setShowTreasureRoom] = useState(false);
+      const [userTreasures, setUserTreasures] = useState({});
 
       const recognitionRef = useRef(null);
       const lessonListRef = useRef(null);
 
       const toggleLanguage = () => { playSound('pop'); setLang(prev => prev === 'zh' ? 'en' : 'zh'); };
+
+      const openTreasureRoom = () => {
+        playSound('pop');
+        setShowTreasureRoom(true);
+        db.ref('leaderboard').once('value').then(snapshot => {
+          const data = snapshot.val();
+          const userTries = {};
+          if (data) {
+            Object.keys(data).forEach(lessonId => {
+              const records = data[lessonId];
+              let tries = 0;
+              if (records) {
+                Object.keys(records).forEach(recordId => {
+                  const r = records[recordId];
+                  if (r.name && r.name.trim().toLowerCase() === studentName.trim().toLowerCase()) {
+                    tries += 1;
+                  }
+                });
+              }
+              userTries[lessonId] = tries;
+            });
+          }
+          setUserTreasures(userTries);
+        });
+      };
 
       const toggleFullScreen = () => {
         playSound('pop');
@@ -312,7 +404,6 @@
         }
       };
 
-      // 🌟 將資料依據「學生姓名（不分大小寫）」分組，每人只保留「唯一一行」完美紀錄
       useEffect(() => {
         const lessonRef = db.ref('leaderboard/' + leaderboardLesson.id);
         const listener = lessonRef.orderByChild('timestamp').on('value', (snapshot) => {
@@ -323,13 +414,12 @@
 
           const userGroups = {};
           rawData.forEach(record => {
-            // 🌟 自動忽略大小寫與前後空白，確保 Camila 和 camila 會被歸類在一起
             const rawName = record.name || "";
             const normalizedName = rawName.trim().toLowerCase();
             
             if (!userGroups[normalizedName]) {
               userGroups[normalizedName] = {
-                displayName: rawName.trim(), // 畫面上依然保留學生原本輸入的樣子
+                displayName: rawName.trim(), 
                 records: []
               };
             }
@@ -341,21 +431,17 @@
             const group = userGroups[normalizedName];
             const records = group.records;
             
-            // 計算這個學生在這課練習了「幾天」
             const uniqueDates = new Set(records.map(r => new Date(r.timestamp).toLocaleDateString('zh-TW')));
             const daysCount = uniqueDates.size;
             
-            // 計算這個學生在這課總共按了「幾次」挑戰（完成闖關的紀錄筆數）
             const totalTries = records.length; 
             
-            // 找最新紀錄 (為了獲取「最後更新時間」)
             records.sort((a, b) => b.timestamp - a.timestamp);
             const latestRecord = records[0];
             const lastUpdateStr = new Date(latestRecord.timestamp).toLocaleString('zh-TW', {
               month: 'numeric', day: 'numeric', hour: '2-digit', minute:'2-digit'
             });
 
-            // 找最佳成績 (分數最高優先，次數最少次之)
             records.sort((a, b) => {
               if (b.score !== a.score) return b.score - a.score;
               if ((a.attempts || 999) !== (b.attempts || 999)) return (a.attempts || 999) - (b.attempts || 999);
@@ -363,20 +449,18 @@
             });
             const bestRecord = records[0];
 
-            // 🌟 每個人只 push 一筆資料到排行榜，融合了最高分與最新進度
             aggregatedData.push({
               id: bestRecord.id,
-              name: group.displayName, // 顯示原本的名字
+              name: group.displayName, 
               avatar: bestRecord.avatar || '👤',
-              bestScore: bestRecord.score, // 顯示最高分
-              daysCount: daysCount, // 顯示最新天數
-              totalTries: totalTries, // 顯示最新次數
-              lastUpdate: lastUpdateStr, // 顯示最新時間
+              bestScore: bestRecord.score, 
+              daysCount: daysCount, 
+              totalTries: totalTries, 
+              lastUpdate: lastUpdateStr, 
               lastTimestamp: latestRecord.timestamp
             });
           });
 
-          // 🌟 最終排序邏輯：1.分數最高 2.練習天數最多 3.挑戰次數最少 4.最新更新時間
           aggregatedData.sort((a, b) => {
             if (b.bestScore !== a.bestScore) return b.bestScore - a.bestScore;
             if (b.daysCount !== a.daysCount) return b.daysCount - a.daysCount;
@@ -478,7 +562,9 @@
         if ('speechSynthesis' in window && removePunctuation(char) !== '') {
           setHasUsedHint(true); 
           playSound('pop'); window.speechSynthesis.cancel(); 
-          const utterance = new SpeechSynthesisUtterance(char); utterance.lang = 'zh-TW'; window.speechSynthesis.speak(utterance);
+          const utterance = new SpeechSynthesisUtterance(getTtsText(char)); 
+          utterance.lang = 'zh-TW'; 
+          window.speechSynthesis.speak(utterance);
         }
       };
 
@@ -634,7 +720,50 @@
         document.body.removeChild(textArea);
       };
 
-      const LeaderboardModal = () => (
+      // 🌟 將視窗改為常數變數，避免 React 在重繪時因為 Component 卸載而導致點擊失效
+      const renderTreasureModal = () => (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm transition-opacity">
+          <div className="bg-white rounded-[2rem] w-full max-w-4xl shadow-2xl overflow-hidden animate-fade-in-up border-4 border-pink-400 flex flex-col max-h-[85vh]">
+            <div className="bg-gradient-to-r from-pink-400 to-rose-400 p-4 text-white flex justify-between items-center shrink-0">
+              <h2 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
+                <Gift className="w-6 h-6 sm:w-8 sm:h-8" /> {t.treasureRoom} - {studentName}
+              </h2>
+              <button onClick={() => {playSound('pop'); setShowTreasureRoom(false);}} className="p-1 hover:bg-white/20 rounded-full transition-colors">
+                <XIcon className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="p-4 sm:p-6 overflow-y-auto flex-1 bg-pink-50/30">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                {LESSONS.map(lesson => {
+                  const tries = userTreasures[lesson.id] || 0;
+                  const isUnlocked = tries >= 6;
+                  return (
+                    <div key={lesson.id} className={`bg-white rounded-2xl p-4 flex flex-col items-center text-center border-2 transition-all ${isUnlocked ? 'border-pink-200 shadow-md' : 'border-gray-100 shadow-sm opacity-80'}`}>
+                      <div className="text-xs text-gray-400 mb-2 font-bold">{lesson.id} {lang === 'zh' ? lesson.title.split('：')[1] : lesson.titleEn.split(': ')[1]}</div>
+                      <div className={`text-5xl sm:text-6xl mb-3 transition-all duration-500 ${isUnlocked ? 'drop-shadow-lg scale-110 hover:scale-125 hover:rotate-6' : 'grayscale opacity-30 filter'}`}>
+                        {lesson.treasure}
+                      </div>
+                      <div className={`text-sm sm:text-base font-bold ${isUnlocked ? 'text-pink-600' : 'text-gray-400'}`}>
+                        {lang === 'zh' ? lesson.treasureName : lesson.treasureNameEn}
+                      </div>
+                      <div className={`mt-3 px-3 py-1 text-xs font-bold rounded-full ${isUnlocked ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-500'}`}>
+                        {isUnlocked ? (lang === 'zh' ? '已收集' : 'Unlocked') : (lang === 'zh' ? `進度: ${tries}/6` : `Progress: ${tries}/6`)}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="p-4 bg-gray-50 border-t border-gray-100 text-center shrink-0">
+              <button onClick={() => {playSound('pop'); setShowTreasureRoom(false);}} className="px-8 py-3 bg-gradient-to-b from-gray-200 to-gray-300 hover:from-gray-300 hover:to-gray-400 text-gray-700 rounded-full font-bold transition-all shadow-[0_4px_0_0_#d1d5db] active:translate-y-[4px] active:shadow-none">
+                {lang === 'zh' ? '關閉' : 'Close'}
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+
+      const renderLeaderboardModal = () => (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm transition-opacity">
           <div className="bg-white rounded-[2rem] w-full max-w-2xl shadow-2xl overflow-hidden animate-fade-in-up border-4 border-yellow-400 flex flex-col max-h-[85vh]">
             <div className="bg-gradient-to-r from-yellow-400 to-orange-400 p-4 text-white flex justify-between items-center shrink-0">
@@ -685,7 +814,11 @@
                            <span className="text-gray-400 font-bold">{index + 1}</span>}
                         </td>
                         <td className="py-3 pl-2 font-bold text-gray-700 whitespace-nowrap">
-                          <span className="text-lg sm:text-xl mr-1">{record.avatar}</span> <span className="text-sm sm:text-base">{record.name}</span>
+                          <span className="text-lg sm:text-xl mr-1 align-middle">{record.avatar}</span> 
+                          <span className="text-sm sm:text-base align-middle">{record.name}</span>
+                          {record.totalTries >= 6 && (
+                            <span className="ml-2 text-lg sm:text-xl inline-block align-middle animate-bounce drop-shadow-md" title="已獲得專屬寶物！">{leaderboardLesson.treasure}</span>
+                          )}
                         </td>
                         <td className="py-3 text-center font-bold text-orange-500">
                           <div className="flex justify-center items-center gap-1">
@@ -753,14 +886,37 @@
               <button disabled={!tempName.trim()} onClick={() => { setStudentName(tempName.trim()); playSound('pop'); }} className="w-full bg-gradient-to-b from-orange-400 to-orange-500 text-white font-bold text-xl sm:text-3xl py-4 sm:py-5 rounded-full shadow-[0_6px_0_0_#ea580c] hover:translate-y-[-2px] hover:shadow-[0_8px_0_0_#ea580c] active:translate-y-[6px] active:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-auto sm:mt-0 relative z-10 shrink-0">{t.startBtn}</button>
             </div>
             
-            {showLeaderboard && <LeaderboardModal />}
+            {showLeaderboard && renderLeaderboardModal()}
           </div>
         );
       }
 
       if (showSuccessScreen) {
+        const currentUserRecord = leaderboardData.find(r => r.name.toLowerCase() === studentName.trim().toLowerCase());
+        const userTotalTries = currentUserRecord ? currentUserRecord.totalTries : 1;
+        const triesLeft = 6 - userTotalTries;
+        
+        const renderEncouragement = () => {
+          const item = lang === 'zh' ? selectedLesson.treasureName : selectedLesson.treasureNameEn;
+          const emoji = selectedLesson.treasure;
+          if (lang === 'zh') {
+            if (triesLeft > 0) return <>太棒了！過關！再練習 <span className="text-4xl sm:text-6xl font-black text-red-500 mx-2 drop-shadow-md animate-pulse">{triesLeft}</span> 次就可以獲得【{item}】囉，加油！ 💪</>;
+            if (triesLeft === 0) return <>太神啦！你已經完成 <span className="text-4xl sm:text-6xl font-black text-red-500 mx-2 drop-shadow-md animate-pulse">6</span> 次練習，獲得專屬寶物【{item}】！ {emoji}</>;
+            return <>太厲害了！你已經練習 <span className="text-4xl sm:text-6xl font-black text-red-500 mx-2 drop-shadow-md animate-pulse">{userTotalTries}</span> 次了，繼續保持！ 🔥</>;
+          } else {
+            if (triesLeft > 0) return <>Great! Passed! Practice <span className="text-4xl sm:text-6xl font-black text-red-500 mx-2 drop-shadow-md animate-pulse">{triesLeft}</span> more times to get [{item}]! 💪</>;
+            if (triesLeft === 0) return <>Awesome! You completed <span className="text-4xl sm:text-6xl font-black text-red-500 mx-2 drop-shadow-md animate-pulse">6</span> practices & earned [{item}]! {emoji}</>;
+            return <>Amazing! You've practiced <span className="text-4xl sm:text-6xl font-black text-red-500 mx-2 drop-shadow-md animate-pulse">{userTotalTries}</span> times, keep it up! 🔥</>;
+          }
+        };
+
         return (
           <div className="min-h-[100dvh] bg-gradient-to-b from-[#E0F7FA] to-[#E6E6FA] bg-polka p-0 sm:p-4 flex flex-col items-center justify-center relative overflow-hidden">
+            {userTotalTries === 6 && (
+              <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[100] animate-combo pointer-events-none drop-shadow-2xl">
+                <div className="text-[10rem] sm:text-[15rem] leading-none">{selectedLesson.treasure}</div>
+              </div>
+            )}
             <div className="bg-white/95 backdrop-blur-sm rounded-none sm:rounded-[3rem] shadow-[0_20px_50px_-12px_rgba(6,182,212,0.3)] p-6 md:p-12 w-full max-w-3xl h-[100dvh] sm:h-auto flex flex-col justify-center text-center relative overflow-hidden sm:border-[8px] border-white animate-fade-in-up safe-paddings z-10">
               <div className="absolute inset-0 bg-cyan-50 opacity-50 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-cyan-100/40 to-transparent"></div>
               <div className="text-[5rem] sm:text-[7rem] animate-gentle-bounce mb-4 relative z-10 drop-shadow-xl" style={{ animationDuration: '2s' }}>{selectedAvatar}</div>
@@ -768,19 +924,26 @@
               <div className="text-lg sm:text-2xl md:text-3xl text-gray-500 font-normal mb-6 leading-loose relative z-10">{t.congrats} <span className="text-pink-500 text-2xl sm:text-4xl md:text-5xl mx-2 font-bold">{studentName}</span> <br className="hidden sm:block"/><span className="sm:hidden"> </span>{t.completed}<br/><span className="text-cyan-600 inline-block mt-4 bg-cyan-50 px-6 py-2 rounded-full border-4 border-white shadow-sm font-bold text-base sm:text-xl">{lang === 'zh' ? selectedLesson.title : selectedLesson.titleEn}</span></div>
               <div className="flex justify-center items-center gap-2 mb-8 relative z-10 bg-yellow-50 px-6 py-3 rounded-full border-4 border-white shadow-md inline-flex mx-auto transform rotate-2"><Star className="w-8 h-8 text-yellow-400 fill-yellow-400 animate-pulse" /><span className="text-2xl sm:text-3xl font-bold text-orange-500">{t.collectedStars.replace('{n}', sessionStars)}</span></div>
               
+              <div className="bg-pink-50 border-4 border-pink-200 rounded-3xl p-4 sm:p-6 mb-8 relative z-10 shadow-sm mx-auto w-full max-w-lg transform -rotate-1 hover:rotate-0 transition-transform">
+                <p className="text-lg sm:text-2xl font-bold text-pink-600 leading-relaxed flex items-center justify-center flex-wrap">
+                  {renderEncouragement()}
+                </p>
+              </div>
+
               <div className="flex flex-col sm:flex-row flex-wrap gap-4 relative z-10 justify-center w-full mt-auto sm:mt-0 px-2">
                 <button onClick={handlePlayAgain} className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-b from-green-400 to-green-500 text-white rounded-full font-bold text-base sm:text-xl shadow-[0_6px_0_0_#16a34a] hover:translate-y-[-2px] hover:shadow-[0_8px_0_0_#16a34a] active:translate-y-[6px] active:shadow-none transition-all flex items-center justify-center gap-2">
                   <RefreshCw className="w-5 h-5" /> {t.playAgain}
                 </button>
-                <button onClick={() => { playSound('pop'); setShowLeaderboard(true); }} className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-b from-yellow-400 to-yellow-500 text-white rounded-full font-bold text-base sm:text-xl shadow-[0_6px_0_0_#ca8a04] hover:translate-y-[-2px] hover:shadow-[0_8px_0_0_#ca8a04] active:translate-y-[6px] active:shadow-none transition-all flex items-center justify-center gap-2">
-                  <Trophy className="w-5 h-5" /> {t.leaderboard}
+                <button onClick={openTreasureRoom} className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-b from-pink-400 to-pink-500 text-white rounded-full font-bold text-base sm:text-xl shadow-[0_6px_0_0_#be185d] hover:translate-y-[-2px] hover:shadow-[0_8px_0_0_#be185d] active:translate-y-[6px] active:shadow-none transition-all flex items-center justify-center gap-2">
+                  <Gift className="w-5 h-5" /> {t.treasureRoom}
                 </button>
                 <button onClick={() => { playSound('pop'); setCurrentSentenceIndex(0); setRecognizedText(''); setResult(null); setIsFlyingAway(false); setShowSuccessScreen(false); setSessionStars(0); }} className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-b from-cyan-400 to-cyan-500 text-white rounded-full font-bold text-base sm:text-xl shadow-[0_6px_0_0_#0891b2] hover:translate-y-[-2px] hover:shadow-[0_8px_0_0_#0891b2] active:translate-y-[6px] active:shadow-none transition-all flex items-center justify-center gap-2">
                   <ListIcon className="w-5 h-5" /> {t.tryAnother}
                 </button>
               </div>
             </div>
-            {showLeaderboard && <LeaderboardModal />}
+            {showLeaderboard && renderLeaderboardModal()}
+            {showTreasureRoom && renderTreasureModal()}
           </div>
         );
       }
@@ -818,6 +981,7 @@
               </div>
 
               <div className="flex gap-2 w-full sm:w-auto justify-end mt-1 sm:mt-0">
+                <button onClick={openTreasureRoom} className="flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all bg-pink-400 text-white shadow-[0_4px_0_0_#be185d] hover:translate-y-[-2px] border-2 border-pink-500"><Gift className="w-3 h-3 sm:w-4 sm:h-4" /><span>{t.treasureRoom}</span></button>
                 <button onClick={() => { playSound('pop'); setShowLeaderboard(true); }} className="flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all bg-yellow-400 text-white shadow-[0_4px_0_0_#ca8a04] hover:translate-y-[-2px] border-2 border-yellow-500"><Trophy className="w-3 h-3 sm:w-4 sm:h-4" /><span>{t.leaderboard}</span></button>
                 <button onClick={copyLessonLink} className={`flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all sm:w-auto sm:px-5 ${copySuccess ? 'bg-green-400 text-white shadow-[0_4px_0_0_#16a34a] border-2 border-green-500' : 'bg-white text-blue-500 shadow-[0_4px_0_0_#bfdbfe] hover:translate-y-[-2px] border-2 border-blue-200'}`} title={t.copyLink}>{copySuccess && <span className="flex items-center gap-1"><Check className="w-3 h-3 sm:w-4 sm:h-4" /> {t.copied}</span>}{!copySuccess && <span className="flex items-center gap-1"><LinkIcon className="w-3 h-3 sm:w-4 sm:h-4" /> {t.copyLink}</span>}</button>
               </div>
@@ -940,7 +1104,8 @@
             </div>
           )}
           
-          {showLeaderboard && <LeaderboardModal />}
+          {showLeaderboard && renderLeaderboardModal()}
+          {showTreasureRoom && renderTreasureModal()}
         </div>
       );
     }
